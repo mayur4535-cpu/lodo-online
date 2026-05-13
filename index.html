@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Ludo1 Online</title>
+<title>Ludo2 Online</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#111}
@@ -27,11 +27,25 @@ body{background:#111}
 .hole{border-radius:50%;background:#d9aa61;border:4px solid rgba(0,0,0,.42)}
 .blinkTurn{animation:blinkTurn .65s infinite alternate}
 @keyframes blinkTurn{from{filter:brightness(1);box-shadow:inset 0 0 18px #0004,0 0 8px #fff}to{filter:brightness(1.35);box-shadow:inset 0 0 18px #0004,0 0 22px #fff,0 0 35px currentColor}}
-.token{position:absolute;width:7%;height:9%;z-index:30;transform:translate(-50%,-92%);filter:drop-shadow(2px 4px 3px #0008);transition:.18s linear;cursor:pointer}
+
+.token{
+position:absolute;
+width:7%;
+height:9%;
+z-index:30;
+--dx:0px;
+--dy:0px;
+--scale:1;
+transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(var(--scale));
+filter:drop-shadow(2px 4px 3px #0008);
+transition:.18s linear;
+cursor:pointer
+}
 .token:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:82%;aspect-ratio:1;border-radius:50%;background:currentColor;border:4px solid #fff;box-shadow:0 0 0 2px #4b270b}
 .token:after{content:"";position:absolute;top:51%;left:50%;transform:translateX(-50%);border-left:12px solid transparent;border-right:12px solid transparent;border-top:22px solid #fff}
 .redT{color:#ff071d}.greenT{color:#06b84f}.yellowT{color:#ffd400}.blueT{color:#09aee8}
-.can{animation:pulse .55s infinite alternate}@keyframes pulse{to{transform:translate(-50%,-92%) scale(1.18)}}
+.can{animation:pulse .55s infinite alternate}
+@keyframes pulse{to{transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(calc(var(--scale) * 1.18))}}
 .msg{text-align:center;color:white;font-size:27px;font-weight:900;margin:12px 0}
 .panel{display:grid;grid-template-columns:1fr 110px 1fr;gap:10px;align-items:center}
 .box{height:66px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;color:white;border:4px solid #6b350e;box-shadow:0 6px 12px #0006}
@@ -288,6 +302,60 @@ function can(col,i){
   return pos[col][i]+diceVal<=58;
 }
 
+function applyOverlapLayout(){
+  const groups={};
+
+  all.forEach(col=>{
+    for(let i=0;i<4;i++){
+      if(active.indexOf(col)<0)return;
+      const t=tokens[col][i];
+      const p=xy(col,i);
+      const key=p[0].toFixed(2)+"_"+p[1].toFixed(2);
+
+      if(!groups[key])groups[key]=[];
+      groups[key].push(t);
+    }
+  });
+
+  Object.values(groups).forEach(list=>{
+    const n=list.length;
+
+    list.forEach((t,idx)=>{
+      t.style.setProperty("--dx","0px");
+      t.style.setProperty("--dy","0px");
+      t.style.setProperty("--scale","1");
+      t.style.zIndex=30+idx;
+    });
+
+    if(n===2){
+      const offset=[[-7,0],[7,0]];
+      list.forEach((t,i)=>{
+        t.style.setProperty("--dx",offset[i][0]+"px");
+        t.style.setProperty("--dy",offset[i][1]+"px");
+        t.style.setProperty("--scale",".72");
+      });
+    }
+
+    if(n===3){
+      const offset=[[0,-6],[-7,5],[7,5]];
+      list.forEach((t,i)=>{
+        t.style.setProperty("--dx",offset[i][0]+"px");
+        t.style.setProperty("--dy",offset[i][1]+"px");
+        t.style.setProperty("--scale",".66");
+      });
+    }
+
+    if(n>=4){
+      const offset=[[-7,-6],[7,-6],[-7,6],[7,6]];
+      list.forEach((t,i)=>{
+        t.style.setProperty("--dx",offset[i%4][0]+"px");
+        t.style.setProperty("--dy",offset[i%4][1]+"px");
+        t.style.setProperty("--scale",".60");
+      });
+    }
+  });
+}
+
 function render(){
   all.forEach(col=>{
     for(let i=0;i<4;i++){
@@ -297,6 +365,9 @@ function render(){
       t.classList.toggle("can",can(col,i));
     }
   });
+
+  applyOverlapLayout();
+
   let cur=currentColor();
   turnName.textContent=cur.toUpperCase();
   turnName.style.background=`linear-gradient(${color[cur]},${dark[cur]})`;
