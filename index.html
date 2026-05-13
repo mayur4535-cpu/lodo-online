@@ -13,11 +13,8 @@ body{background:#111;color:#fff}
 .logo{font-size:55px;font-weight:900;color:#ffc400;text-align:center;line-height:.9;margin:28px 0;text-shadow:3px 4px #5b2100}
 .input{width:100%;height:50px;background:#260b02;border:2px solid #d7aa69;border-radius:8px;color:white;font-size:16px;padding:0 14px;margin:8px 0}
 .btn{width:100%;height:52px;border:0;border-radius:9px;color:white;font-size:20px;font-weight:900;margin:10px 0;box-shadow:inset 0 -4px #0005}
-.greenBtn{background:linear-gradient(#36d900,#0a8b00)}
-.blueBtn{background:linear-gradient(#168df0,#004ea0)}
-.redBtn{background:linear-gradient(#ef2630,#9d0008)}
-.orangeBtn{background:linear-gradient(#ff8c00,#d95b00)}
-.purpleBtn{background:linear-gradient(#9b21ff,#5a00aa)}
+.greenBtn{background:linear-gradient(#36d900,#0a8b00)}.blueBtn{background:linear-gradient(#168df0,#004ea0)}.redBtn{background:linear-gradient(#ef2630,#9d0008)}
+.orangeBtn{background:linear-gradient(#ff8c00,#d95b00)}.purpleBtn{background:linear-gradient(#9b21ff,#5a00aa)}
 .link{text-align:center;color:#ffe51c;font-weight:900;margin-top:12px;cursor:pointer}
 .small{text-align:center;color:#fff;font-size:14px;margin:8px}
 .profileBox{display:flex;align-items:center;gap:12px;background:#260b02;border:1px solid #d7aa69;border-radius:10px;padding:10px;margin-bottom:14px}
@@ -32,11 +29,12 @@ body{background:#111;color:#fff}
 .roomPick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
 .roomPick button{height:42px;border:0;border-radius:8px;font-size:18px;font-weight:900;background:#3a1706;color:#fff;border:1px solid #d7aa69}
 .roomPick button.on{background:#ffd400;color:#111}
-.game{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#e2aa57,#c97900)}
+#recaptcha-container{margin-top:10px;display:flex;justify-content:center}
+.game{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#e2aa57,#c97900);position:relative}
+.gameBack{position:absolute;top:14px;left:14px;z-index:100;width:42px;height:42px;border-radius:50%;border:3px solid #6b350e;background:#b60008;color:#ffe51c;font-size:26px;font-weight:900;box-shadow:0 4px 8px #0008}
 .top{height:58px;background:#b60008;color:#ffe51c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;margin-bottom:10px;border:4px solid #5b2100}
 .btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
-.btns button{height:48px;border:0;border-radius:10px;font-size:26px;font-weight:900;background:#ffd678}
-.btns button.on{background:#06be4c;color:white}
+.btns button{height:48px;border:0;border-radius:10px;font-size:26px;font-weight:900;background:#ffd678}.btns button.on{background:#06be4c;color:white}
 .board{width:100%;aspect-ratio:1;position:relative;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);background:#e8bd70;border:5px solid #5c330d}
 .cell{border:1px solid #6a4117;background:#e8bd70}
 .red{background:#ff071d!important}.green{background:#06b84f!important}.yellow{background:#ffd400!important}.blue{background:#09aee8!important}
@@ -82,7 +80,13 @@ body{background:#111;color:#fff}
     <input id="suEmail" class="input" placeholder="Enter Email">
     <input id="suPass" class="input" type="password" placeholder="Enter Password">
     <input id="suPass2" class="input" type="password" placeholder="Confirm Password">
-    <button class="btn greenBtn" id="signupBtn">SIGN UP</button>
+    <button class="btn greenBtn" id="signupBtn">SIGN UP WITH EMAIL</button>
+    <button class="btn blueBtn" id="googleSignupBtn">SIGN UP WITH GOOGLE</button>
+    <input id="phoneNumber" class="input" placeholder="+91 Phone Number">
+    <button class="btn orangeBtn" id="sendOtpBtn">SEND OTP</button>
+    <input id="otpCode" class="input" placeholder="Enter OTP">
+    <button class="btn greenBtn" id="verifyOtpBtn">VERIFY OTP</button>
+    <div id="recaptcha-container"></div>
     <div class="link" id="signupToLogin">Already have account? LOGIN</div>
   </div>
 </div>
@@ -94,7 +98,8 @@ body{background:#111;color:#fff}
     <input id="liEmail" class="input" placeholder="Enter Email">
     <input id="liPass" class="input" type="password" placeholder="Enter Password">
     <div class="link" id="forgotLink">Forgot Password?</div>
-    <button class="btn greenBtn" id="loginBtn">LOGIN</button>
+    <button class="btn greenBtn" id="loginBtn">LOGIN WITH EMAIL</button>
+    <button class="btn blueBtn" id="googleLoginBtn">LOGIN WITH GOOGLE</button>
     <div class="link" id="loginToSignup">Don’t have account? SIGN UP</div>
   </div>
 </div>
@@ -134,6 +139,7 @@ body{background:#111;color:#fff}
     <button class="btn blueBtn" id="saveNameBtn">SAVE NAME</button>
     <div class="stats">
       <div><span>Email</span><b id="profileEmail"></b></div>
+      <div><span>Phone</span><b id="profilePhone"></b></div>
       <div><span>Total Games</span><b id="totalGames">0</b></div>
       <div><span>Games Won</span><b id="gamesWon">0</b></div>
       <div><span>Win Rate</span><b id="winRate">0%</b></div>
@@ -164,6 +170,7 @@ body{background:#111;color:#fff}
 </div>
 
 <div id="gameScreen" class="screen game">
+  <button id="backHomeBtn" class="gameBack">‹</button>
   <div class="top">PLAY WITH OTHER PLAYERS</div>
   <div id="playerBtns" class="btns">
     <button data-p="2">2</button><button data-p="3">3</button><button data-p="4" class="on">4</button>
@@ -180,31 +187,49 @@ body{background:#111;color:#fff}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getDatabase, ref, set, update, get, onValue } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 const firebaseConfig={apiKey:"AIzaSyDTpVxyJ9hgvpJZuiTrQpFtZKqjKotgQfk",authDomain:"ludo-453.firebaseapp.com",databaseURL:"https://ludo-453-default-rtdb.firebaseio.com",projectId:"ludo-453",storageBucket:"ludo-453.firebasestorage.app",messagingSenderId:"750622072689",appId:"1:750622072689:web:51c0588e7838d223aea0d0"};
 const app=initializeApp(firebaseConfig),db=getDatabase(app),auth=getAuth(app);
 const $=id=>document.getElementById(id);
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active")}
 
-let currentUser=null,userProfile={name:"Player",email:""};
+let currentUser=null,userProfile={name:"Player",email:"",phone:""},confirmationResultGlobal=null;
 $("goLogin").onclick=()=>show("loginScreen");$("goSignup").onclick=()=>show("signupScreen");
 $("signupToLogin").onclick=()=>show("loginScreen");$("loginToSignup").onclick=()=>show("signupScreen");
 $("forgotLink").onclick=()=>show("forgotScreen");$("backLogin").onclick=()=>show("loginScreen");
 $("profileBtn").onclick=()=>{loadProfileUI();show("profileScreen")};$("profileBack").onclick=()=>show("homeScreen");
 $("roomBack").onclick=()=>show("homeScreen");$("playFriends").onclick=()=>{prepareRoomScreen();show("roomScreen")};
 
-$("signupBtn").onclick=async()=>{try{const name=$("suName").value.trim(),email=$("suEmail").value.trim(),p=$("suPass").value,p2=$("suPass2").value;if(!name||!email||!p)return alert("Fill all details");if(p!==p2)return alert("Password not match");const cr=await createUserWithEmailAndPassword(auth,email,p);await set(ref(db,"users/"+cr.user.uid),{name,email,totalGames:0,gamesWon:0,createdAt:Date.now()});}catch(e){alert(e.message)}};
+async function saveUserIfMissing(user,name){
+  const snap=await get(ref(db,"users/"+user.uid));
+  if(!snap.exists()){
+    await set(ref(db,"users/"+user.uid),{
+      name:name||user.displayName||user.phoneNumber||"Player",
+      email:user.email||"",
+      phone:user.phoneNumber||"",
+      totalGames:0,
+      gamesWon:0,
+      createdAt:Date.now()
+    });
+  }
+}
+
+$("signupBtn").onclick=async()=>{try{const name=$("suName").value.trim(),email=$("suEmail").value.trim(),p=$("suPass").value,p2=$("suPass2").value;if(!name||!email||!p)return alert("Fill all details");if(p!==p2)return alert("Password not match");const cr=await createUserWithEmailAndPassword(auth,email,p);await set(ref(db,"users/"+cr.user.uid),{name,email,phone:"",totalGames:0,gamesWon:0,createdAt:Date.now()});}catch(e){alert(e.message)}};
 $("loginBtn").onclick=async()=>{try{await signInWithEmailAndPassword(auth,$("liEmail").value.trim(),$("liPass").value)}catch(e){alert(e.message)}};
 $("resetBtn").onclick=async()=>{try{await sendPasswordResetEmail(auth,$("fpEmail").value.trim());alert("Reset link sent")}catch(e){alert(e.message)}};
+$("googleSignupBtn").onclick=async()=>{try{const provider=new GoogleAuthProvider();const result=await signInWithPopup(auth,provider);await saveUserIfMissing(result.user,result.user.displayName)}catch(e){alert(e.message)}};
+$("googleLoginBtn").onclick=async()=>{try{const provider=new GoogleAuthProvider();const result=await signInWithPopup(auth,provider);await saveUserIfMissing(result.user,result.user.displayName)}catch(e){alert(e.message)}};
+$("sendOtpBtn").onclick=async()=>{try{const phone=$("phoneNumber").value.trim();if(!phone)return alert("Enter phone with country code, example +919999999999");if(!window.recaptchaVerifier){window.recaptchaVerifier=new RecaptchaVerifier(auth,"recaptcha-container",{size:"normal"});}confirmationResultGlobal=await signInWithPhoneNumber(auth,phone,window.recaptchaVerifier);alert("OTP sent")}catch(e){alert(e.message)}};
+$("verifyOtpBtn").onclick=async()=>{try{const otp=$("otpCode").value.trim();if(!otp)return alert("Enter OTP");if(!confirmationResultGlobal)return alert("First send OTP");const result=await confirmationResultGlobal.confirm(otp);await saveUserIfMissing(result.user,$("suName").value.trim()||"Player")}catch(e){alert(e.message)}};
 $("logoutBtn").onclick=()=>signOut(auth);
 
-onAuthStateChanged(auth,async(u)=>{if(!u){currentUser=null;show("splashScreen");return}currentUser=u;const snap=await get(ref(db,"users/"+u.uid));userProfile=snap.exists()?snap.val():{name:"Player",email:u.email,totalGames:0,gamesWon:0};updateHomeUI();show("homeScreen")});
-function updateHomeUI(){$("homeName").textContent=userProfile.name||"Player";$("homeEmail").textContent=userProfile.email||currentUser.email;$("homeAvatar").textContent=(userProfile.name||"P")[0].toUpperCase()}
-function loadProfileUI(){$("profileName").textContent=userProfile.name||"Player";$("editName").value=userProfile.name||"";$("profileEmail").textContent=userProfile.email||currentUser.email;$("profileAvatar").textContent=(userProfile.name||"P")[0].toUpperCase();$("totalGames").textContent=userProfile.totalGames||0;$("gamesWon").textContent=userProfile.gamesWon||0;let tg=userProfile.totalGames||0,gw=userProfile.gamesWon||0;$("winRate").textContent=tg?Math.round(gw/tg*100)+"%":"0%"}
+onAuthStateChanged(auth,async(u)=>{if(!u){currentUser=null;show("splashScreen");return}currentUser=u;const snap=await get(ref(db,"users/"+u.uid));userProfile=snap.exists()?snap.val():{name:u.displayName||"Player",email:u.email||"",phone:u.phoneNumber||"",totalGames:0,gamesWon:0};updateHomeUI();show("homeScreen")});
+function updateHomeUI(){$("homeName").textContent=userProfile.name||"Player";$("homeEmail").textContent=userProfile.email||userProfile.phone||currentUser.email||currentUser.phoneNumber||"";$("homeAvatar").textContent=(userProfile.name||"P")[0].toUpperCase()}
+function loadProfileUI(){$("profileName").textContent=userProfile.name||"Player";$("editName").value=userProfile.name||"";$("profileEmail").textContent=userProfile.email||currentUser.email||"";$("profilePhone").textContent=userProfile.phone||currentUser.phoneNumber||"";$("profileAvatar").textContent=(userProfile.name||"P")[0].toUpperCase();$("totalGames").textContent=userProfile.totalGames||0;$("gamesWon").textContent=userProfile.gamesWon||0;let tg=userProfile.totalGames||0,gw=userProfile.gamesWon||0;$("winRate").textContent=tg?Math.round(gw/tg*100)+"%":"0%"}
 $("saveNameBtn").onclick=async()=>{const name=$("editName").value.trim();if(!name)return;await update(ref(db,"users/"+currentUser.uid),{name});userProfile.name=name;updateHomeUI();loadProfileUI();alert("Saved")};
 
-let online=false,roomCode="",myColor="red",unsub=null,applyingRemote=false,isHost=false,selectedRoomPlayers=4,currentRoomPlayers={},roomStarted=false;
+let online=false,roomCode="",myColor="red",unsub=null,applyingRemote=false,isHost=false,selectedRoomPlayers=4,currentRoomPlayers={};
 const roomColors={2:["red","blue"],3:["red","green","blue"],4:["red","green","yellow","blue"]};
 function prepareRoomScreen(){isHost=false;$("hostOptions").style.display="block";$("createRoomBtn").style.display="block";$("joinRoomBtn").style.display="block";$("roomInput").style.display="block";$("startRoomBtn").style.display="none";$("roomText").textContent="";$("roomStatus").textContent="";$("roomPlayers").innerHTML="";$("roomInput").value=""}
 document.querySelectorAll(".roomPick button").forEach(b=>b.onclick=()=>{selectedRoomPlayers=Number(b.dataset.rp);document.querySelectorAll(".roomPick button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
@@ -217,15 +242,17 @@ const lane={red:[[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]],green:[[7,1],[7,2],[7,
 const base={red:[[10,1],[10,4],[13,1],[13,4]],green:[[1,1],[1,4],[4,1],[4,4]],yellow:[[1,10],[1,13],[4,10],[4,13]],blue:[[10,10],[10,13],[13,10],[13,13]]};
 
 $("playOffline").onclick=()=>{online=false;show("gameScreen");$("playerBtns").style.display="grid";build();reset(4)};
+$("backHomeBtn").onclick=()=>{if(unsub)unsub();online=false;roomCode="";myColor="red";tokens=null;$("board").innerHTML="";$("playerBtns").style.display="grid";show("homeScreen")};
+
 function initialState(n){return{active:roomColors[n],maxPlayers:n,turn:0,diceVal:0,busy:false,waiting:false,gameOver:false,animating:false,finished:[],pos:{red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},msg:"RED TURN"}}
 
 $("createRoomBtn").onclick=async()=>{roomCode=Math.random().toString(36).substring(2,8).toUpperCase();isHost=true;online=true;myColor="red";const st=initialState(selectedRoomPlayers);st.roomCode=roomCode;st.started=false;st.hostUid=currentUser.uid;st.players={red:{uid:currentUser.uid,name:userProfile.name||"Player",color:"red"}};await set(ref(db,"rooms/"+roomCode),st);listenRoom();$("roomText").textContent=roomCode;$("roomStatus").textContent="Host: wait players, then Start Game";$("startRoomBtn").style.display="block";$("hostOptions").style.display="none";$("createRoomBtn").style.display="none";$("joinRoomBtn").style.display="none";$("roomInput").style.display="none"};
 $("joinRoomBtn").onclick=async()=>{roomCode=$("roomInput").value.trim().toUpperCase();if(!roomCode)return alert("Enter room code");const snap=await get(ref(db,"rooms/"+roomCode));if(!snap.exists())return alert("Room not found");const st=snap.val();if(st.started)return alert("Game already started");const max=st.maxPlayers||2,colors=st.active||roomColors[max],players=st.players||{},used=Object.keys(players);if(used.some(c=>players[c].uid===currentUser.uid)){myColor=used.find(c=>players[c].uid===currentUser.uid)}else{const free=colors.find(c=>!used.includes(c));if(!free)return alert("Room full");myColor=free;await update(ref(db,"rooms/"+roomCode+"/players/"+myColor),{uid:currentUser.uid,name:userProfile.name||"Player",color:myColor})}isHost=false;online=true;listenRoom();$("roomText").textContent=roomCode;$("roomStatus").textContent="Waiting for host to start";$("startRoomBtn").style.display="none";$("hostOptions").style.display="none";$("createRoomBtn").style.display="none";$("joinRoomBtn").style.display="none";$("roomInput").style.display="none"};
 $("startRoomBtn").onclick=async()=>{if(!isHost)return alert("Only host can start");const playersCount=Object.keys(currentRoomPlayers||{}).length;if(playersCount<2)return alert("At least 2 players required");await update(ref(db,"rooms/"+roomCode),{started:true})};
 
-function listenRoom(){if(unsub)unsub();unsub=onValue(ref(db,"rooms/"+roomCode),(snap)=>{const st=snap.val();if(!st)return;currentRoomPlayers=st.players||{};roomStarted=!!st.started;renderPlayers(currentRoomPlayers,st.maxPlayers||2);applyState(st);if(st.started){show("gameScreen");$("playerBtns").style.display="none";if(!tokens)build();render()}})}
+function listenRoom(){if(unsub)unsub();unsub=onValue(ref(db,"rooms/"+roomCode),(snap)=>{const st=snap.val();if(!st)return;currentRoomPlayers=st.players||{};renderPlayers(currentRoomPlayers,st.maxPlayers||2);applyState(st);if(st.started){show("gameScreen");$("playerBtns").style.display="none";if(!tokens)build();render()}})}
 function renderPlayers(players,max){const arr=Object.values(players);$("roomPlayers").innerHTML=arr.map(p=>`<div class="playerItem">${p.name} - ${p.color}</div>`).join("");$("roomStatus").textContent=(isHost?"Host only can start. ":"Waiting for host. ")+arr.length+"/"+max+" players joined"}
-function pushState(text){if(!online||applyingRemote)return;get(ref(db,"rooms/"+roomCode+"/players")).then(snap=>{const savedPlayers=snap.exists()?snap.val():{};update(ref(db,"rooms/"+roomCode),{active,turn,diceVal,busy,waiting,gameOver,animating,finished,pos,msg:text||$("msg").textContent,started:true,players:savedPlayers,roomCode,maxPlayers:active.length,hostUid:isHost?currentUser.uid:null})})}
+function pushState(text){if(!online||applyingRemote)return;get(ref(db,"rooms/"+roomCode+"/players")).then(snap=>{const savedPlayers=snap.exists()?snap.val():{};update(ref(db,"rooms/"+roomCode),{active,turn,diceVal,busy,waiting,gameOver,animating,finished,pos,msg:text||$("msg").textContent,started:true,players:savedPlayers,roomCode,maxPlayers:active.length})})}
 function applyState(st){applyingRemote=true;active=st.active;turn=st.turn;diceVal=st.diceVal;busy=st.busy;waiting=st.waiting;gameOver=st.gameOver;animating=st.animating;finished=st.finished||[];pos=st.pos;$("msg").textContent=st.msg||"";if(tokens)render();applyingRemote=false}
 
 function setDice(n){const maps={1:[0,0,0,0,1,0,0,0,0],2:[1,0,0,0,0,0,0,0,1],3:[1,0,0,0,1,0,0,0,1],4:[1,0,1,0,0,0,1,0,1],5:[1,0,1,0,1,0,1,0,1],6:[1,0,1,1,0,1,1,0,1]};$("dice").innerHTML=maps[n||1].map(v=>`<span class="dot ${v?'':'hide'}"></span>`).join("")}
