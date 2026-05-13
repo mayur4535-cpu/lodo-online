@@ -3,10 +3,81 @@
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Ludo Online</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#111}
+.screen{display:none}.screen.active{display:block}
+.menu,.game{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#e2aa57,#c97900)}
+.top{height:58px;background:#b60008;color:#ffe51c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;margin-bottom:10px;border:4px solid #5b2100}
+.bigBtn{width:100%;height:66px;border:0;border-radius:14px;font-size:26px;font-weight:900;margin:10px 0;color:white}
+.online{background:#08b94e}.offline{background:#e25b00}.create{background:#087bd8}.join{background:#b60008}
+.input{width:100%;height:58px;border:0;border-radius:12px;text-align:center;font-size:25px;font-weight:900;text-transform:uppercase;margin:10px 0}
+.roomText{text-align:center;color:#fff;font-size:24px;font-weight:900;margin:10px}
+.btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.btns button{height:48px;border:0;border-radius:10px;font-size:26px;font-weight:900;background:#ffd678}
+.btns button.on{background:#06be4c;color:white}
+.board{width:100%;aspect-ratio:1;position:relative;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);background:#e8bd70;border:5px solid #5c330d}
+.cell{border:1px solid #6a4117;background:#e8bd70}
+.red{background:#ff071d!important}.green{background:#06b84f!important}.yellow{background:#ffd400!important}.blue{background:#09aee8!important}
+.center{background:conic-gradient(#06b84f 0 25%,#ffd400 25% 50%,#09aee8 50% 75%,#ff071d 75% 100%)!important}
+.star{display:flex;align-items:center;justify-content:center}.star:after{content:"★";font-size:20px;color:#5c330d}
+.home{position:absolute;z-index:5;border-radius:22px;border:5px solid rgba(0,0,0,.22);box-shadow:inset 0 0 18px #0004,0 6px 10px #0004}
+.home.green{left:0;top:0;width:40%;height:40%}.home.yellow{right:0;top:0;width:40%;height:40%}.home.red{left:0;bottom:0;width:40%;height:40%}.home.blue{right:0;bottom:0;width:40%;height:40%}
+.holes{width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;gap:18%;padding:18%}
+.hole{border-radius:50%;background:#d9aa61;border:4px solid rgba(0,0,0,.42)}
+.token{position:absolute;width:7%;height:9%;z-index:30;transform:translate(-50%,-92%);filter:drop-shadow(2px 4px 3px #0008);transition:.18s linear;cursor:pointer}
+.token:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:82%;aspect-ratio:1;border-radius:50%;background:currentColor;border:4px solid #fff;box-shadow:0 0 0 2px #4b270b}
+.token:after{content:"";position:absolute;top:51%;left:50%;transform:translateX(-50%);border-left:12px solid transparent;border-right:12px solid transparent;border-top:22px solid #fff}
+.redT{color:#ff071d}.greenT{color:#06b84f}.yellowT{color:#ffd400}.blueT{color:#09aee8}
+.can{animation:pulse .55s infinite alternate}@keyframes pulse{to{transform:translate(-50%,-92%) scale(1.18)}}
+.msg{text-align:center;color:white;font-size:27px;font-weight:900;margin:12px 0}
+.panel{display:grid;grid-template-columns:1fr 110px 1fr;gap:10px;align-items:center}
+.box{height:66px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;color:white;border:4px solid #6b350e;box-shadow:0 6px 12px #0006}
+#turnName{background:linear-gradient(#ff2636,#c70d1c)}#mode{background:#9d5700}
+.diceWrap{width:110px;height:110px;border-radius:22px;background:linear-gradient(#ff2636,#c70d1c);border:5px solid #6b350e;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 14px #0007}
+#dice{width:84px;height:84px;border-radius:15px;border:6px solid #111;background:#fff;cursor:pointer;box-shadow:inset 0 -8px #ddd,0 4px 10px #0007;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px}
+.dot{width:14px;height:14px;background:#111;border-radius:50%;align-self:center;justify-self:center}.hide{visibility:hidden}
+@media(max-width:390px){.panel{grid-template-columns:1fr 98px 1fr}.diceWrap{width:98px;height:98px}#dice{width:76px;height:76px;padding:8px}.dot{width:13px;height:13px}.box{font-size:21px;height:60px}.top{font-size:20px}}
+</style>
+</head>
+<body>
+
+<div id="menuScreen" class="screen active menu">
+  <div class="top">LUDO GAME</div>
+  <button id="onlineBtn" class="bigBtn online">ONLINE</button>
+  <button id="offlineBtn" class="bigBtn offline">OFFLINE</button>
+</div>
+
+<div id="onlineScreen" class="screen menu">
+  <div class="top">ONLINE ROOM</div>
+  <button id="createRoomBtn" class="bigBtn create">CREATE ROOM</button>
+  <input id="roomInput" class="input" placeholder="ROOM CODE">
+  <button id="joinRoomBtn" class="bigBtn join">JOIN ROOM</button>
+  <div id="roomText" class="roomText"></div>
+</div>
+
+<div id="gameScreen" class="screen game">
+  <div class="top">PLAY WITH OTHER PLAYERS</div>
+
+  <div id="playerBtns" class="btns">
+    <button data-p="2">2</button>
+    <button data-p="3">3</button>
+    <button data-p="4" class="on">4</button>
+  </div>
+
+  <div class="board" id="board"></div>
+  <div class="msg" id="msg">RED TURN</div>
+
+  <div class="panel">
+    <div class="box" id="turnName">RED</div>
+    <div class="diceWrap"><button id="dice"></button></div>
+    <div class="box" id="mode">4P</div>
+  </div>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+import { getDatabase, ref, set, update, get, onValue } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDTpVxyJ9hgvpJZuiTrQpFtZKqjKotgQfk",
@@ -21,346 +92,347 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-window.firebaseDB=db;
-window.firebaseRef=ref;
-window.firebaseSet=set;
-window.firebaseOnValue=onValue;
-window.firebaseGet=get;
-</script>
+const menuScreen=document.getElementById("menuScreen");
+const onlineScreen=document.getElementById("onlineScreen");
+const gameScreen=document.getElementById("gameScreen");
+const board=document.getElementById("board");
+const msg=document.getElementById("msg");
+const dice=document.getElementById("dice");
+const turnName=document.getElementById("turnName");
+const mode=document.getElementById("mode");
+const playerBtns=document.getElementById("playerBtns");
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#111;color:#fff}
-.screen{display:none}
-.active{display:block}
+let online=false, roomCode="", myColor="red", unsub=null, applyingRemote=false;
 
-.home{
-width:100%;
-max-width:430px;
-margin:auto;
-min-height:100vh;
-padding:20px;
-background:linear-gradient(#e2aa57,#c97900);
+const all=["red","green","yellow","blue"];
+let active=["red","green","yellow","blue"];
+let turn=0,diceVal=0,busy=false,waiting=false,gameOver=false,animating=false;
+let finished=[];
+let pos,tokens;
+
+const color={red:"#ff071d",green:"#06b84f",yellow:"#ffd400",blue:"#09aee8"};
+const dark={red:"#97000c",green:"#066b30",yellow:"#a98600",blue:"#04769d"};
+const offset={red:0,green:13,yellow:26,blue:39};
+const safe=[0,8,13,21,26,34,39,47];
+
+const path=[[13,6],[12,6],[11,6],[10,6],[9,6],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0],[7,0],[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[4,6],[3,6],[2,6],[1,6],[0,6],[0,7],[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,14],[8,14],[8,13],[8,12],[8,11],[8,10],[8,9],[9,8],[10,8],[11,8],[12,8],[13,8],[14,8],[14,7],[14,6]];
+const lane={red:[[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]],green:[[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]],yellow:[[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]],blue:[[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]]};
+const base={red:[[10,1],[10,4],[13,1],[13,4]],green:[[1,1],[1,4],[4,1],[4,4]],yellow:[[1,10],[1,13],[4,10],[4,13]],blue:[[10,10],[10,13],[13,10],[13,13]]};
+
+function show(s){
+  [menuScreen,onlineScreen,gameScreen].forEach(x=>x.classList.remove("active"));
+  s.classList.add("active");
 }
 
-.title{
-height:70px;
-background:#b60008;
-border-radius:14px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:30px;
-font-weight:900;
-color:#ffe51c;
-border:4px solid #5b2100;
-margin-bottom:20px;
+document.getElementById("offlineBtn").onclick=()=>{
+  online=false;
+  show(gameScreen);
+  playerBtns.style.display="grid";
+  build();
+  reset(4);
+};
+
+document.getElementById("onlineBtn").onclick=()=>{
+  show(onlineScreen);
+};
+
+document.getElementById("createRoomBtn").onclick=async()=>{
+  roomCode=Math.random().toString(36).substring(2,6).toUpperCase();
+  myColor="red";
+  online=true;
+  document.getElementById("roomText").innerHTML="ROOM CODE: "+roomCode+"<br>Waiting friend...";
+  const st=initialState(2);
+  st.roomCode=roomCode; st.players={red:true,blue:false};
+  await set(ref(db,"rooms/"+roomCode),st);
+  listenRoom();
+};
+
+document.getElementById("joinRoomBtn").onclick=async()=>{
+  roomCode=document.getElementById("roomInput").value.trim().toUpperCase();
+  if(!roomCode)return alert("Enter room code");
+  const snap=await get(ref(db,"rooms/"+roomCode));
+  if(!snap.exists())return alert("Room not found");
+  myColor="blue";
+  online=true;
+  await update(ref(db,"rooms/"+roomCode+"/players"),{blue:true});
+  listenRoom();
+  show(gameScreen);
+  playerBtns.style.display="none";
+  build();
+};
+
+function listenRoom(){
+  if(unsub)unsub();
+  unsub=onValue(ref(db,"rooms/"+roomCode),(snap)=>{
+    const st=snap.val();
+    if(!st)return;
+    applyState(st);
+    if(st.players && st.players.blue){
+      show(gameScreen);
+      playerBtns.style.display="none";
+      if(!tokens)build();
+      render();
+    }
+  });
 }
 
-.bigBtn{
-height:70px;
-border:none;
-width:100%;
-border-radius:16px;
-font-size:28px;
-font-weight:900;
-margin-bottom:18px;
-color:#fff;
-cursor:pointer;
+function initialState(n){
+  return {
+    active:n===2?["red","blue"]:n===3?["red","green","blue"]:["red","green","yellow","blue"],
+    turn:0,diceVal:0,busy:false,waiting:false,gameOver:false,animating:false,finished:[],
+    pos:{red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},
+    msg:"RED TURN"
+  };
 }
 
-.online{background:#06be4c}
-.offline{background:#ff6a00}
-.create{background:#0d9aff}
-.join{background:#b60008}
-
-.input{
-width:100%;
-height:65px;
-border-radius:14px;
-border:none;
-font-size:28px;
-text-align:center;
-font-weight:900;
-margin-bottom:18px;
-text-transform:uppercase;
+function pushState(text){
+  if(!online || applyingRemote)return;
+  set(ref(db,"rooms/"+roomCode),{
+    active,turn,diceVal,busy,waiting,gameOver,animating,finished,pos,msg:text||msg.textContent,
+    players:{red:true,blue:true},roomCode
+  });
 }
 
-.roomText{
-font-size:34px;
-font-weight:900;
-text-align:center;
-margin:20px 0;
-color:#ffe51c;
+function applyState(st){
+  applyingRemote=true;
+  active=st.active; turn=st.turn; diceVal=st.diceVal; busy=st.busy; waiting=st.waiting;
+  gameOver=st.gameOver; animating=st.animating; finished=st.finished||[]; pos=st.pos;
+  msg.textContent=st.msg||"";
+  if(tokens)render();
+  applyingRemote=false;
 }
 
-.wait{
-text-align:center;
-font-size:26px;
-font-weight:900;
-margin-top:20px;
+function setDice(n){
+  const maps={
+    1:[0,0,0,0,1,0,0,0,0],
+    2:[1,0,0,0,0,0,0,0,1],
+    3:[1,0,0,0,1,0,0,0,1],
+    4:[1,0,1,0,0,0,1,0,1],
+    5:[1,0,1,0,1,0,1,0,1],
+    6:[1,0,1,1,0,1,1,0,1]
+  };
+  dice.innerHTML=maps[n||1].map(v=>`<span class="dot ${v?'':'hide'}"></span>`).join("");
 }
 
-iframe{
-width:100%;
-height:100vh;
-border:none;
-}
-</style>
-</head>
+function center(r,c){return[(c+.5)*100/15,(r+.5)*100/15]}
+function isPath(r,c){return path.some(p=>p[0]===r&&p[1]===c)}
+function laneColor(r,c){for(let k in lane){if(lane[k].some(p=>p[0]===r&&p[1]===c))return k}return""}
+function isStar(r,c){return safe.some(i=>path[i][0]===r&&path[i][1]===c)}
 
-<body>
-
-<!-- MODE -->
-<div class="home screen active" id="modeScreen">
-<div class="title">LUDO GAME</div>
-
-<button class="bigBtn online" onclick="showOnline()">
-ONLINE
-</button>
-
-<button class="bigBtn offline" onclick="startOffline()">
-OFFLINE
-</button>
-</div>
-
-<!-- ONLINE -->
-<div class="home screen" id="onlineScreen">
-<div class="title">ONLINE MODE</div>
-
-<button class="bigBtn create" onclick="createRoom()">
-CREATE ROOM
-</button>
-
-<input class="input" id="roomCodeInput" placeholder="ROOM CODE">
-
-<button class="bigBtn join" onclick="joinRoom()">
-JOIN ROOM
-</button>
-
-<div class="roomText" id="roomText"></div>
-<div class="wait" id="waitText"></div>
-</div>
-
-<!-- GAME -->
-<div class="screen" id="gameScreen">
-<iframe srcdoc='
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<style>
-body{
-margin:0;
-background:#111;
-font-family:Arial
-}
-.game{
-width:100%;
-max-width:430px;
-margin:auto;
-min-height:100vh;
-padding:12px;
-background:linear-gradient(#e2aa57,#c97900)
-}
-.top{
-height:58px;
-background:#b60008;
-color:#ffe51c;
-border-radius:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-font-weight:900;
-margin-bottom:10px;
-border:4px solid #5b2100
-}
-.board{
-width:100%;
-aspect-ratio:1;
-background:#e8bd70;
-border:5px solid #5c330d;
-border-radius:10px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:34px;
-font-weight:900;
-color:#5c330d
-}
-.panel{
-margin-top:15px;
-display:grid;
-grid-template-columns:1fr 110px 1fr;
-gap:10px;
-align-items:center
-}
-.box{
-height:66px;
-border-radius:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:26px;
-font-weight:900;
-color:white;
-border:4px solid #6b350e;
-background:#b60008
-}
-.diceWrap{
-width:110px;
-height:110px;
-border-radius:22px;
-background:#b60008;
-border:5px solid #6b350e;
-display:flex;
-align-items:center;
-justify-content:center
-}
-#dice{
-width:84px;
-height:84px;
-background:#fff;
-border-radius:14px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:40px;
-font-weight:900
-}
-</style>
-</head>
-
-<body>
-
-<div class="game">
-
-<div class="top">
-ONLINE LUDO
-</div>
-
-<div class="board">
-ui1 GAME CONNECTED
-</div>
-
-<div class="panel">
-
-<div class="box" id="turn">
-P1
-</div>
-
-<div class="diceWrap">
-<div id="dice">1</div>
-</div>
-
-<div class="box">
-ROOM
-</div>
-
-</div>
-
-</div>
-
-<script>
-let dice=document.getElementById("dice");
-
-setInterval(()=>{
-dice.innerHTML=Math.floor(Math.random()*6)+1;
-},1500);
-</script>
-
-</body>
-</html>
-
-'></iframe>
-</div>
-
-<script>
-let roomCode="";
-let isHost=false;
-
-function showOnline(){
-document.getElementById("modeScreen").classList.remove("active");
-document.getElementById("onlineScreen").classList.add("active");
+function makeHome(col){
+  let h=document.createElement("div");
+  h.className="home "+col;
+  h.innerHTML='<div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>';
+  board.appendChild(h);
 }
 
-function startOffline(){
-document.getElementById("modeScreen").innerHTML=`
-<div class="title">OFFLINE ui1</div>
-<div class="wait">Paste your ui1 offline code here</div>
-`;
+function build(){
+  board.innerHTML="";
+  for(let r=0;r<15;r++){
+    for(let c=0;c<15;c++){
+      let d=document.createElement("div");
+      d.className="cell";
+      d.style.gridColumn=c+1;
+      d.style.gridRow=r+1;
+
+      if(r<6&&c<6)d.classList.add("green");
+      if(r<6&&c>8)d.classList.add("yellow");
+      if(r>8&&c<6)d.classList.add("red");
+      if(r>8&&c>8)d.classList.add("blue");
+
+      if(isPath(r,c))d.className="cell";
+      let lc=laneColor(r,c);
+      if(lc)d.className="cell "+lc;
+      if(isStar(r,c))d.classList.add("star");
+      if(r>=6&&r<=8&&c>=6&&c<=8)d.className="cell center";
+      board.appendChild(d);
+    }
+  }
+
+  makeHome("green");makeHome("yellow");makeHome("red");makeHome("blue");
+
+  tokens={red:[],green:[],yellow:[],blue:[]};
+  all.forEach(col=>{
+    for(let i=0;i<4;i++){
+      let t=document.createElement("div");
+      t.className="token "+col+"T";
+      t.dataset.c=col;t.dataset.i=i;
+      board.appendChild(t);
+      tokens[col].push(t);
+    }
+  });
 }
 
-function randomCode(){
-return Math.random().toString(36).substring(2,6).toUpperCase();
+function reset(n){
+  let st=initialState(n);
+  active=st.active;turn=st.turn;diceVal=st.diceVal;busy=false;waiting=false;gameOver=false;animating=false;finished=[];pos=st.pos;
+  mode.textContent=n+"P";
+  document.querySelectorAll(".btns button").forEach(b=>b.classList.toggle("on",Number(b.dataset.p)===n));
+  setDice(1);
+  setTurn();
 }
 
-async function createRoom(){
+function xy(col,i){
+  let p=pos[col][i];
+  if(p<0)return center(base[col][i][0],base[col][i][1]);
+  if(p<=51){let g=(offset[col]+p)%52;return center(path[g][0],path[g][1])}
+  if(p<=57){let l=lane[col][p-52];return center(l[0],l[1])}
+  return[50,50];
+}
 
-roomCode=randomCode();
-isHost=true;
+function currentColor(){return active[turn]}
+function isMyTurn(){return !online || currentColor()===myColor}
 
-document.getElementById("roomText").innerHTML="ROOM : "+roomCode;
-document.getElementById("waitText").innerHTML="WAITING FOR PLAYER...";
+function can(col,i){
+  if(gameOver||animating||col!==currentColor()||diceVal===0)return false;
+  if(online && col!==myColor)return false;
+  if(pos[col][i]>=58)return false;
+  if(pos[col][i]<0)return diceVal===6;
+  return pos[col][i]+diceVal<=58;
+}
 
-await firebaseSet(
-firebaseRef(firebaseDB,"rooms/"+roomCode),
-{
-player1:true,
-player2:false,
-turn:"red",
-dice:1
+function render(){
+  all.forEach(col=>{
+    for(let i=0;i<4;i++){
+      let t=tokens[col][i],p=xy(col,i);
+      t.style.left=p[0]+"%";t.style.top=p[1]+"%";
+      t.style.display=active.indexOf(col)>=0?"block":"none";
+      t.classList.toggle("can",can(col,i));
+    }
+  });
+  let cur=currentColor();
+  turnName.textContent=cur.toUpperCase();
+  turnName.style.background=`linear-gradient(${color[cur]},${dark[cur]})`;
+  document.querySelector(".diceWrap").style.background=`linear-gradient(${color[cur]},${dark[cur]})`;
+  mode.textContent=online?roomCode:(active.length+"P");
+  setDice(diceVal||1);
+}
+
+function setTurn(){
+  if(gameOver)return;
+  diceVal=0;busy=false;waiting=false;animating=false;
+  msg.textContent=currentColor().toUpperCase()+" TURN";
+  render();
+  pushState(msg.textContent);
+  if(!online && currentColor()!=="red")setTimeout(roll,700);
+}
+
+function roll(){
+  if(gameOver||busy||waiting||animating||!isMyTurn())return;
+  busy=true;
+  let c=0;
+  let tm=setInterval(()=>{
+    setDice(Math.floor(Math.random()*6)+1);
+    c++;
+    if(c>10){
+      clearInterval(tm);
+      diceVal=Math.floor(Math.random()*6)+1;
+      setDice(diceVal);
+      afterRoll();
+    }
+  },70);
+}
+
+function afterRoll(){
+  let cur=currentColor(),moves=[];
+  for(let i=0;i<4;i++)if(can(cur,i))moves.push(i);
+  if(!moves.length){
+    msg.textContent="NO MOVE";
+    pushState(msg.textContent);
+    setTimeout(next,650);
+    return;
+  }
+  waiting=true;busy=false;
+  msg.textContent=(online && cur!==myColor)?cur+" PLAYING":(cur==="red"?"CHOOSE COOKIE":cur+" MOVING");
+  render();pushState(msg.textContent);
+  if(!online && cur!=="red")setTimeout(()=>computer(moves),650);
+}
+
+function move(col,i){
+  if(col!==currentColor()||!waiting||!can(col,i))return;
+  doMove(col,i);
+}
+
+function animateMove(col,i,target,cb){
+  animating=true;waiting=false;
+  function step(){
+    if(pos[col][i]<0){pos[col][i]=0;render();pushState(msg.textContent);setTimeout(done,180);return}
+    if(pos[col][i]<target){pos[col][i]++;render();pushState(msg.textContent);setTimeout(step,180)}
+    else done();
+  }
+  function done(){animating=false;cb()}
+  step();
+}
+
+function doMove(col,i){
+  busy=true;
+  let target=(pos[col][i]<0&&diceVal===6)?0:pos[col][i]+diceVal;
+  animateMove(col,i,target,()=>{
+    if(pos[col][i]===58)checkFinish(col);
+    else cut(col,i);
+    render();
+
+    if(gameOver){pushState("GAME OVER");return}
+    if(diceVal===6){
+      diceVal=0;busy=false;waiting=false;
+      msg.textContent=col+" GOT 6";
+      render();pushState(msg.textContent);
+      if(!online && col!=="red")setTimeout(roll,700);
+    }else setTimeout(next,650);
+  });
+}
+
+function checkFinish(col){
+  if(pos[col].every(v=>v>=58)&&finished.indexOf(col)<0){
+    finished.push(col);
+    if(finished.length>=active.length-1){
+      gameOver=true;
+      msg.textContent="GAME OVER";
+    }
+  }
+}
+
+function global(col,p){
+  if(p<0||p>51)return null;
+  return(offset[col]+p)%52;
+}
+
+function cut(col,i){
+  let g=global(col,pos[col][i]);
+  if(g===null||safe.indexOf(g)>=0)return;
+  active.forEach(o=>{
+    if(o===col)return;
+    for(let j=0;j<4;j++){
+      if(global(o,pos[o][j])===g){
+        pos[o][j]=-1;
+        msg.textContent=col+" CUT "+o;
+      }
+    }
+  });
+}
+
+function next(){
+  if(gameOver)return;
+  diceVal=0;busy=false;waiting=false;animating=false;
+  do{turn=(turn+1)%active.length}while(finished.indexOf(active[turn])>=0);
+  setTurn();
+}
+
+function computer(moves){
+  let col=currentColor(),pick=moves[0];
+  if(diceVal===6){
+    for(let i=0;i<moves.length;i++)if(pos[col][moves[i]]<0){pick=moves[i];break}
+  }else{
+    for(let j=0;j<moves.length;j++)if(pos[col][moves[j]]>=0){pick=moves[j];break}
+  }
+  doMove(col,pick);
+}
+
+document.addEventListener("click",(e)=>{
+  if(e.target.matches(".btns button") && !online)reset(Number(e.target.dataset.p));
+  if(e.target.id==="dice")roll();
+  if(e.target.classList.contains("token"))move(e.target.dataset.c,Number(e.target.dataset.i));
 });
-
-firebaseOnValue(
-firebaseRef(firebaseDB,"rooms/"+roomCode),
-(snapshot)=>{
-
-let data=snapshot.val();
-
-if(data && data.player2){
-
-startOnlineGame();
-
-}
-});
-}
-
-async function joinRoom(){
-
-roomCode=document.getElementById("roomCodeInput").value.toUpperCase();
-
-if(!roomCode)return;
-
-let snap=await firebaseGet(
-firebaseRef(firebaseDB,"rooms/"+roomCode)
-);
-
-if(snap.exists()){
-
-await firebaseSet(
-firebaseRef(firebaseDB,"rooms/"+roomCode+"/player2"),
-true
-);
-
-startOnlineGame();
-
-}else{
-
-alert("ROOM NOT FOUND");
-
-}
-}
-
-function startOnlineGame(){
-
-document.getElementById("onlineScreen").classList.remove("active");
-document.getElementById("gameScreen").classList.add("active");
-
-}
 </script>
-
 </body>
 </html>
