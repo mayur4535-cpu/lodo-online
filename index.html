@@ -2,17 +2,17 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Ludo Online</title>
+<title>Ludo3 Online</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#111;color:#fff}
 .screen{display:none}.screen.active{display:block}
 .app{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#3a1605,#110500)}
-.header{height:58px;background:linear-gradient(#b90008,#6d0004);color:#ffe51c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;border:4px solid #d79400;margin-bottom:16px;text-shadow:2px 2px #000}
-.card{background:linear-gradient(#3a1706,#1b0802);border:3px solid #d79400;border-radius:18px;padding:18px;box-shadow:0 12px 24px #0008}
-.logo{font-size:55px;font-weight:900;color:#ffc400;text-align:center;line-height:.9;margin:28px 0;text-shadow:3px 4px #5b2100}
+.header{height:58px;background:linear-gradient(#b90008,#6d0004);color:#ffe51c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;border:4px solid #d79400;margin-bottom:16px}
+.card{background:linear-gradient(#3a1706,#1b0802);border:3px solid #d79400;border-radius:18px;padding:18px}
+.logo{font-size:55px;font-weight:900;color:#ffc400;text-align:center;line-height:.9;margin:28px 0}
 .input{width:100%;height:50px;background:#260b02;border:2px solid #d7aa69;border-radius:8px;color:white;font-size:16px;padding:0 14px;margin:8px 0}
-.btn{width:100%;height:52px;border:0;border-radius:9px;color:white;font-size:20px;font-weight:900;margin:10px 0;box-shadow:inset 0 -4px #0005}
+.btn{width:100%;height:52px;border:0;border-radius:9px;color:white;font-size:20px;font-weight:900;margin:10px 0}
 .greenBtn{background:linear-gradient(#36d900,#0a8b00)}.blueBtn{background:linear-gradient(#168df0,#004ea0)}.redBtn{background:linear-gradient(#ef2630,#9d0008)}
 .orangeBtn{background:linear-gradient(#ff8c00,#d95b00)}.purpleBtn{background:linear-gradient(#9b21ff,#5a00aa)}
 .link{text-align:center;color:#ffe51c;font-weight:900;margin-top:12px;cursor:pointer}
@@ -31,7 +31,7 @@ body{background:#111;color:#fff}
 .roomPick button.on{background:#ffd400;color:#111}
 #recaptcha-container{margin-top:10px;display:flex;justify-content:center}
 .game{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#e2aa57,#c97900);position:relative}
-.gameBack{position:absolute;top:14px;left:14px;z-index:100;width:42px;height:42px;border-radius:50%;border:3px solid #6b350e;background:#b60008;color:#ffe51c;font-size:26px;font-weight:900;box-shadow:0 4px 8px #0008}
+.gameBack{position:absolute;top:14px;left:14px;z-index:100;width:42px;height:42px;border-radius:50%;border:3px solid #6b350e;background:#b60008;color:#ffe51c;font-size:26px;font-weight:900}
 .top{height:58px;background:#b60008;color:#ffe51c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;margin-bottom:10px;border:4px solid #5b2100}
 .btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
 .btns button{height:48px;border:0;border-radius:10px;font-size:26px;font-weight:900;background:#ffd678}.btns button.on{background:#06be4c;color:white}
@@ -40,12 +40,12 @@ body{background:#111;color:#fff}
 .red{background:#ff071d!important}.green{background:#06b84f!important}.yellow{background:#ffd400!important}.blue{background:#09aee8!important}
 .center{background:conic-gradient(#06b84f 0 25%,#ffd400 25% 50%,#09aee8 50% 75%,#ff071d 75% 100%)!important}
 .star{display:flex;align-items:center;justify-content:center}.star:after{content:"★";font-size:20px;color:#5c330d}
-.home{position:absolute;z-index:5;border-radius:22px;border:5px solid rgba(0,0,0,.22);box-shadow:inset 0 0 18px #0004,0 6px 10px #0004}
+.home{position:absolute;z-index:5;border-radius:22px;border:5px solid rgba(0,0,0,.22)}
 .home.green{left:0;top:0;width:40%;height:40%}.home.yellow{right:0;top:0;width:40%;height:40%}.home.red{left:0;bottom:0;width:40%;height:40%}.home.blue{right:0;bottom:0;width:40%;height:40%}
 .holes{width:100%;height:100%;display:grid;grid-template-columns:1fr 1fr;gap:18%;padding:18%}
 .hole{border-radius:50%;background:#d9aa61;border:4px solid rgba(0,0,0,.42)}
 .blinkTurn{animation:blinkTurn .65s infinite alternate}
-@keyframes blinkTurn{from{filter:brightness(1);box-shadow:inset 0 0 18px #0004,0 0 8px #fff}to{filter:brightness(1.35);box-shadow:inset 0 0 18px #0004,0 0 22px #fff,0 0 35px currentColor}}
+@keyframes blinkTurn{from{filter:brightness(1)}to{filter:brightness(1.35);box-shadow:0 0 25px #fff}}
 .token{position:absolute;width:7%;height:9%;z-index:30;--dx:0px;--dy:0px;--scale:1;transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(var(--scale));filter:drop-shadow(2px 4px 3px #0008);transition:.18s linear;cursor:pointer}
 .token:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:82%;aspect-ratio:1;border-radius:50%;background:currentColor;border:4px solid #fff;box-shadow:0 0 0 2px #4b270b}
 .token:after{content:"";position:absolute;top:51%;left:50%;transform:translateX(-50%);border-left:12px solid transparent;border-right:12px solid transparent;border-top:22px solid #fff}
@@ -53,12 +53,11 @@ body{background:#111;color:#fff}
 .can{animation:pulse .55s infinite alternate}@keyframes pulse{to{transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(calc(var(--scale) * 1.18))}}
 .msg{text-align:center;color:white;font-size:27px;font-weight:900;margin:12px 0}
 .panel{display:grid;grid-template-columns:1fr 110px 1fr;gap:10px;align-items:center}
-.box{height:66px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;color:white;border:4px solid #6b350e;box-shadow:0 6px 12px #0006}
+.box{height:66px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;color:white;border:4px solid #6b350e}
 #turnName{background:linear-gradient(#ff2636,#c70d1c)}#mode{background:#9d5700}
-.diceWrap{width:110px;height:110px;border-radius:22px;background:linear-gradient(#ff2636,#c70d1c);border:5px solid #6b350e;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 14px #0007}
-#dice{width:84px;height:84px;border-radius:15px;border:6px solid #111;background:#fff;cursor:pointer;box-shadow:inset 0 -8px #ddd,0 4px 10px #0007;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px}
+.diceWrap{width:110px;height:110px;border-radius:22px;background:linear-gradient(#ff2636,#c70d1c);border:5px solid #6b350e;display:flex;align-items:center;justify-content:center}
+#dice{width:84px;height:84px;border-radius:15px;border:6px solid #111;background:#fff;cursor:pointer;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px}
 .dot{width:14px;height:14px;background:#111;border-radius:50%;align-self:center;justify-self:center;pointer-events:none}.hide{visibility:hidden}
-@media(max-width:390px){.panel{grid-template-columns:1fr 98px 1fr}.diceWrap{width:98px;height:98px}#dice{width:76px;height:76px;padding:8px}.dot{width:13px;height:13px}.box{font-size:21px;height:60px}.top{font-size:20px}}
 </style>
 </head>
 <body>
@@ -75,7 +74,6 @@ body{background:#111;color:#fff}
 <div id="signupScreen" class="screen app">
   <div class="header">★ LUDO GAME ★</div>
   <div class="card">
-    <div class="small" style="font-size:20px;color:#ffe51c;font-weight:900">CREATE ACCOUNT</div>
     <input id="suName" class="input" placeholder="Enter Your Name">
     <input id="suEmail" class="input" placeholder="Enter Email">
     <input id="suPass" class="input" type="password" placeholder="Enter Password">
@@ -94,7 +92,6 @@ body{background:#111;color:#fff}
 <div id="loginScreen" class="screen app">
   <div class="header">★ LUDO GAME ★</div>
   <div class="card">
-    <div class="small" style="font-size:20px;color:#ffe51c;font-weight:900">LOGIN TO ACCOUNT</div>
     <input id="liEmail" class="input" placeholder="Enter Email">
     <input id="liPass" class="input" type="password" placeholder="Enter Password">
     <div class="link" id="forgotLink">Forgot Password?</div>
@@ -107,7 +104,6 @@ body{background:#111;color:#fff}
 <div id="forgotScreen" class="screen app">
   <div class="header">★ LUDO GAME ★</div>
   <div class="card">
-    <div class="small" style="font-size:20px;color:#ffe51c;font-weight:900">RESET PASSWORD</div>
     <input id="fpEmail" class="input" placeholder="Enter Email">
     <button class="btn greenBtn" id="resetBtn">SEND RESET LINK</button>
     <div class="link" id="backLogin">LOGIN</div>
@@ -159,9 +155,9 @@ body{background:#111;color:#fff}
         <button data-rp="4" class="on">4P</button>
       </div>
     </div>
-    <button class="btn create" id="createRoomBtn">CREATE ROOM</button>
+    <button class="btn blueBtn" id="createRoomBtn">CREATE ROOM</button>
     <input id="roomInput" class="input" placeholder="ROOM CODE">
-    <button class="btn join" id="joinRoomBtn">JOIN ROOM</button>
+    <button class="btn redBtn" id="joinRoomBtn">JOIN ROOM</button>
     <div id="roomText" class="code"></div>
     <div id="roomStatus" class="small"></div>
     <div id="roomPlayers"></div>
@@ -187,14 +183,17 @@ body{background:#111;color:#fff}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getDatabase, ref, set, update, get, onValue } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+import { getAuth, setPersistence, browserLocalPersistence, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 const firebaseConfig={apiKey:"AIzaSyDTpVxyJ9hgvpJZuiTrQpFtZKqjKotgQfk",authDomain:"ludo-453.firebaseapp.com",databaseURL:"https://ludo-453-default-rtdb.firebaseio.com",projectId:"ludo-453",storageBucket:"ludo-453.firebasestorage.app",messagingSenderId:"750622072689",appId:"1:750622072689:web:51c0588e7838d223aea0d0"};
 const app=initializeApp(firebaseConfig),db=getDatabase(app),auth=getAuth(app);
+await setPersistence(auth,browserLocalPersistence);
+
 const $=id=>document.getElementById(id);
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active")}
 
 let currentUser=null,userProfile={name:"Player",email:"",phone:""},confirmationResultGlobal=null;
+
 $("goLogin").onclick=()=>show("loginScreen");$("goSignup").onclick=()=>show("signupScreen");
 $("signupToLogin").onclick=()=>show("loginScreen");$("loginToSignup").onclick=()=>show("signupScreen");
 $("forgotLink").onclick=()=>show("forgotScreen");$("backLogin").onclick=()=>show("loginScreen");
@@ -220,34 +219,59 @@ $("loginBtn").onclick=async()=>{try{await signInWithEmailAndPassword(auth,$("liE
 $("resetBtn").onclick=async()=>{try{await sendPasswordResetEmail(auth,$("fpEmail").value.trim());alert("Reset link sent")}catch(e){alert(e.message)}};
 $("googleSignupBtn").onclick=async()=>{try{const provider=new GoogleAuthProvider();const result=await signInWithPopup(auth,provider);await saveUserIfMissing(result.user,result.user.displayName)}catch(e){alert(e.message)}};
 $("googleLoginBtn").onclick=async()=>{try{const provider=new GoogleAuthProvider();const result=await signInWithPopup(auth,provider);await saveUserIfMissing(result.user,result.user.displayName)}catch(e){alert(e.message)}};
-$("sendOtpBtn").onclick=async()=>{try{const phone=$("phoneNumber").value.trim();if(!phone)return alert("Enter phone with country code, example +919999999999");if(!window.recaptchaVerifier){window.recaptchaVerifier=new RecaptchaVerifier(auth,"recaptcha-container",{size:"normal"});}confirmationResultGlobal=await signInWithPhoneNumber(auth,phone,window.recaptchaVerifier);alert("OTP sent")}catch(e){alert(e.message)}};
+$("sendOtpBtn").onclick=async()=>{try{const phone=$("phoneNumber").value.trim();if(!phone)return alert("Enter phone with country code");if(!window.recaptchaVerifier){window.recaptchaVerifier=new RecaptchaVerifier(auth,"recaptcha-container",{size:"normal"});}confirmationResultGlobal=await signInWithPhoneNumber(auth,phone,window.recaptchaVerifier);alert("OTP sent")}catch(e){alert(e.message)}};
 $("verifyOtpBtn").onclick=async()=>{try{const otp=$("otpCode").value.trim();if(!otp)return alert("Enter OTP");if(!confirmationResultGlobal)return alert("First send OTP");const result=await confirmationResultGlobal.confirm(otp);await saveUserIfMissing(result.user,$("suName").value.trim()||"Player")}catch(e){alert(e.message)}};
 $("logoutBtn").onclick=()=>signOut(auth);
 
-onAuthStateChanged(auth,async(u)=>{if(!u){currentUser=null;show("splashScreen");return}currentUser=u;const snap=await get(ref(db,"users/"+u.uid));userProfile=snap.exists()?snap.val():{name:u.displayName||"Player",email:u.email||"",phone:u.phoneNumber||"",totalGames:0,gamesWon:0};updateHomeUI();show("homeScreen")});
-function updateHomeUI(){$("homeName").textContent=userProfile.name||"Player";$("homeEmail").textContent=userProfile.email||userProfile.phone||currentUser.email||currentUser.phoneNumber||"";$("homeAvatar").textContent=(userProfile.name||"P")[0].toUpperCase()}
-function loadProfileUI(){$("profileName").textContent=userProfile.name||"Player";$("editName").value=userProfile.name||"";$("profileEmail").textContent=userProfile.email||currentUser.email||"";$("profilePhone").textContent=userProfile.phone||currentUser.phoneNumber||"";$("profileAvatar").textContent=(userProfile.name||"P")[0].toUpperCase();$("totalGames").textContent=userProfile.totalGames||0;$("gamesWon").textContent=userProfile.gamesWon||0;let tg=userProfile.totalGames||0,gw=userProfile.gamesWon||0;$("winRate").textContent=tg?Math.round(gw/tg*100)+"%":"0%"}
+onAuthStateChanged(auth,async(u)=>{
+  if(!u){currentUser=null;show("splashScreen");return}
+  currentUser=u;
+  const snap=await get(ref(db,"users/"+u.uid));
+  userProfile=snap.exists()?snap.val():{name:u.displayName||"Player",email:u.email||"",phone:u.phoneNumber||"",totalGames:0,gamesWon:0};
+  updateHomeUI();
+  show("homeScreen");
+});
+
+function updateHomeUI(){
+  $("homeName").textContent=userProfile.name||"Player";
+  $("homeEmail").textContent=userProfile.email||userProfile.phone||currentUser.email||currentUser.phoneNumber||"";
+  $("homeAvatar").textContent=(userProfile.name||"P")[0].toUpperCase();
+}
+function loadProfileUI(){
+  $("profileName").textContent=userProfile.name||"Player";
+  $("editName").value=userProfile.name||"";
+  $("profileEmail").textContent=userProfile.email||currentUser.email||"";
+  $("profilePhone").textContent=userProfile.phone||currentUser.phoneNumber||"";
+  $("profileAvatar").textContent=(userProfile.name||"P")[0].toUpperCase();
+  $("totalGames").textContent=userProfile.totalGames||0;
+  $("gamesWon").textContent=userProfile.gamesWon||0;
+  let tg=userProfile.totalGames||0,gw=userProfile.gamesWon||0;
+  $("winRate").textContent=tg?Math.round(gw/tg*100)+"%":"0%";
+}
 $("saveNameBtn").onclick=async()=>{const name=$("editName").value.trim();if(!name)return;await update(ref(db,"users/"+currentUser.uid),{name});userProfile.name=name;updateHomeUI();loadProfileUI();alert("Saved")};
 
+/* LUDO GAME LOGIC START */
 let online=false,roomCode="",myColor="red",unsub=null,applyingRemote=false,isHost=false,selectedRoomPlayers=4,currentRoomPlayers={};
 const roomColors={2:["red","blue"],3:["red","green","blue"],4:["red","green","yellow","blue"]};
-function prepareRoomScreen(){isHost=false;$("hostOptions").style.display="block";$("createRoomBtn").style.display="block";$("joinRoomBtn").style.display="block";$("roomInput").style.display="block";$("startRoomBtn").style.display="none";$("roomText").textContent="";$("roomStatus").textContent="";$("roomPlayers").innerHTML="";$("roomInput").value=""}
-document.querySelectorAll(".roomPick button").forEach(b=>b.onclick=()=>{selectedRoomPlayers=Number(b.dataset.rp);document.querySelectorAll(".roomPick button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
-
 const all=["red","green","yellow","blue"];
 let active=["red","green","yellow","blue"],turn=0,diceVal=0,busy=false,waiting=false,gameOver=false,animating=false,finished=[],pos,tokens;
 const color={red:"#ff071d",green:"#06b84f",yellow:"#ffd400",blue:"#09aee8"},dark={red:"#97000c",green:"#066b30",yellow:"#a98600",blue:"#04769d"},offset={red:0,green:13,yellow:26,blue:39},safe=[0,8,13,21,26,34,39,47];
+
 const path=[[13,6],[12,6],[11,6],[10,6],[9,6],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0],[7,0],[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[4,6],[3,6],[2,6],[1,6],[0,6],[0,7],[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,14],[8,14],[8,13],[8,12],[8,11],[8,10],[8,9],[9,8],[10,8],[11,8],[12,8],[13,8],[14,8],[14,7],[14,6]];
 const lane={red:[[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]],green:[[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]],yellow:[[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]],blue:[[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]]};
 const base={red:[[10,1],[10,4],[13,1],[13,4]],green:[[1,1],[1,4],[4,1],[4,4]],yellow:[[1,10],[1,13],[4,10],[4,13]],blue:[[10,10],[10,13],[13,10],[13,13]]};
 
+function prepareRoomScreen(){isHost=false;$("hostOptions").style.display="block";$("createRoomBtn").style.display="block";$("joinRoomBtn").style.display="block";$("roomInput").style.display="block";$("startRoomBtn").style.display="none";$("roomText").textContent="";$("roomStatus").textContent="";$("roomPlayers").innerHTML="";$("roomInput").value=""}
+document.querySelectorAll(".roomPick button").forEach(b=>b.onclick=()=>{selectedRoomPlayers=Number(b.dataset.rp);document.querySelectorAll(".roomPick button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
 $("playOffline").onclick=()=>{online=false;show("gameScreen");$("playerBtns").style.display="grid";build();reset(4)};
 $("backHomeBtn").onclick=()=>{if(unsub)unsub();online=false;roomCode="";myColor="red";tokens=null;$("board").innerHTML="";$("playerBtns").style.display="grid";show("homeScreen")};
 
 function initialState(n){return{active:roomColors[n],maxPlayers:n,turn:0,diceVal:0,busy:false,waiting:false,gameOver:false,animating:false,finished:[],pos:{red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},msg:"RED TURN"}}
 
 $("createRoomBtn").onclick=async()=>{roomCode=Math.random().toString(36).substring(2,8).toUpperCase();isHost=true;online=true;myColor="red";const st=initialState(selectedRoomPlayers);st.roomCode=roomCode;st.started=false;st.hostUid=currentUser.uid;st.players={red:{uid:currentUser.uid,name:userProfile.name||"Player",color:"red"}};await set(ref(db,"rooms/"+roomCode),st);listenRoom();$("roomText").textContent=roomCode;$("roomStatus").textContent="Host: wait players, then Start Game";$("startRoomBtn").style.display="block";$("hostOptions").style.display="none";$("createRoomBtn").style.display="none";$("joinRoomBtn").style.display="none";$("roomInput").style.display="none"};
-$("joinRoomBtn").onclick=async()=>{roomCode=$("roomInput").value.trim().toUpperCase();if(!roomCode)return alert("Enter room code");const snap=await get(ref(db,"rooms/"+roomCode));if(!snap.exists())return alert("Room not found");const st=snap.val();if(st.started)return alert("Game already started");const max=st.maxPlayers||2,colors=st.active||roomColors[max],players=st.players||{},used=Object.keys(players);if(used.some(c=>players[c].uid===currentUser.uid)){myColor=used.find(c=>players[c].uid===currentUser.uid)}else{const free=colors.find(c=>!used.includes(c));if(!free)return alert("Room full");myColor=free;await update(ref(db,"rooms/"+roomCode+"/players/"+myColor),{uid:currentUser.uid,name:userProfile.name||"Player",color:myColor})}isHost=false;online=true;listenRoom();$("roomText").textContent=roomCode;$("roomStatus").textContent="Waiting for host to start";$("startRoomBtn").style.display="none";$("hostOptions").style.display="none";$("createRoomBtn").style.display="none";$("joinRoomBtn").style.display="none";$("roomInput").style.display="none"};
+
+$("joinRoomBtn").onclick=async()=>{roomCode=$("roomInput").value.trim().toUpperCase();if(!roomCode)return alert("Enter room code");const snap=await get(ref(db,"rooms/"+roomCode));if(!snap.exists())return alert("Room not found");const st=snap.val();if(st.started)return alert("Game already started");const max=st.maxPlayers||2,colors=st.active||roomColors[max],players=st.players||{},used=Object.keys(players);const free=colors.find(c=>!used.includes(c));if(!free)return alert("Room full");myColor=free;await update(ref(db,"rooms/"+roomCode+"/players/"+myColor),{uid:currentUser.uid,name:userProfile.name||"Player",color:myColor});isHost=false;online=true;listenRoom();$("roomText").textContent=roomCode;$("roomStatus").textContent="Waiting for host to start";$("startRoomBtn").style.display="none";$("hostOptions").style.display="none";$("createRoomBtn").style.display="none";$("joinRoomBtn").style.display="none";$("roomInput").style.display="none"};
+
 $("startRoomBtn").onclick=async()=>{if(!isHost)return alert("Only host can start");const playersCount=Object.keys(currentRoomPlayers||{}).length;if(playersCount<2)return alert("At least 2 players required");await update(ref(db,"rooms/"+roomCode),{started:true})};
 
 function listenRoom(){if(unsub)unsub();unsub=onValue(ref(db,"rooms/"+roomCode),(snap)=>{const st=snap.val();if(!st)return;currentRoomPlayers=st.players||{};renderPlayers(currentRoomPlayers,st.maxPlayers||2);applyState(st);if(st.started){show("gameScreen");$("playerBtns").style.display="none";if(!tokens)build();render()}})}
