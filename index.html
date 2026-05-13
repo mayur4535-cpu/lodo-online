@@ -2,17 +2,38 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Ludo2 Online</title>
+<title>Ludo Online</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#111}
+body{background:#111;color:#fff}
 .screen{display:none}.screen.active{display:block}
-.menu,.game{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#e2aa57,#c97900)}
+.app{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#3a1605,#110500)}
+.header{height:58px;background:linear-gradient(#b90008,#6d0004);color:#ffe51c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;border:4px solid #d79400;margin-bottom:16px;text-shadow:2px 2px #000}
+.card{background:linear-gradient(#3a1706,#1b0802);border:3px solid #d79400;border-radius:18px;padding:18px;box-shadow:0 12px 24px #0008}
+.logo{font-size:55px;font-weight:900;color:#ffc400;text-align:center;line-height:.9;margin:28px 0;text-shadow:3px 4px #5b2100}
+.input{width:100%;height:50px;background:#260b02;border:2px solid #d7aa69;border-radius:8px;color:white;font-size:16px;padding:0 14px;margin:8px 0}
+.btn{width:100%;height:52px;border:0;border-radius:9px;color:white;font-size:20px;font-weight:900;margin:10px 0;box-shadow:inset 0 -4px #0005}
+.greenBtn{background:linear-gradient(#36d900,#0a8b00)}
+.blueBtn{background:linear-gradient(#168df0,#004ea0)}
+.redBtn{background:linear-gradient(#ef2630,#9d0008)}
+.orangeBtn{background:linear-gradient(#ff8c00,#d95b00)}
+.purpleBtn{background:linear-gradient(#9b21ff,#5a00aa)}
+.link{text-align:center;color:#ffe51c;font-weight:900;margin-top:12px;cursor:pointer}
+.small{text-align:center;color:#fff;font-size:14px;margin:8px}
+.profileBox{display:flex;align-items:center;gap:12px;background:#260b02;border:1px solid #d7aa69;border-radius:10px;padding:10px;margin-bottom:14px}
+.avatar{width:54px;height:54px;border-radius:50%;background:#ffd400;color:#111;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900}
+.menuBtn{height:62px;border-radius:10px;display:flex;align-items:center;justify-content:flex-start;padding:0 18px;font-size:18px;font-weight:900;margin:10px 0;color:white;border:0}
+.menuBtn span{font-size:28px;margin-right:12px}
+.stats{background:#260b02;border:1px solid #d7aa69;border-radius:10px;padding:12px;margin:10px 0}
+.stats div{display:flex;justify-content:space-between;border-bottom:1px solid #ffffff20;padding:10px 0}
+.code{font-size:40px;color:#ffe51c;font-weight:900;text-align:center;margin:10px}
+.playerItem{background:#350f04;border:1px solid #d7aa69;border-radius:8px;padding:10px;margin:8px 0;font-weight:900}
+.back{position:absolute;margin:12px;font-size:25px;background:#0006;border:0;color:white;border-radius:50%;width:36px;height:36px}
+.roomPick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.roomPick button{height:42px;border:0;border-radius:8px;font-size:18px;font-weight:900;background:#3a1706;color:#fff;border:1px solid #d7aa69}
+.roomPick button.on{background:#ffd400;color:#111}
+.game{width:100%;max-width:430px;min-height:100vh;margin:auto;padding:12px;background:linear-gradient(#e2aa57,#c97900)}
 .top{height:58px;background:#b60008;color:#ffe51c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;margin-bottom:10px;border:4px solid #5b2100}
-.bigBtn{width:100%;height:66px;border:0;border-radius:14px;font-size:26px;font-weight:900;margin:10px 0;color:white}
-.online{background:#08b94e}.offline{background:#e25b00}.create{background:#087bd8}.join{background:#b60008}
-.input{width:100%;height:58px;border:0;border-radius:12px;text-align:center;font-size:25px;font-weight:900;text-transform:uppercase;margin:10px 0}
-.roomText{text-align:center;color:#fff;font-size:24px;font-weight:900;margin:10px}
 .btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
 .btns button{height:48px;border:0;border-radius:10px;font-size:26px;font-weight:900;background:#ffd678}
 .btns button.on{background:#06be4c;color:white}
@@ -27,25 +48,11 @@ body{background:#111}
 .hole{border-radius:50%;background:#d9aa61;border:4px solid rgba(0,0,0,.42)}
 .blinkTurn{animation:blinkTurn .65s infinite alternate}
 @keyframes blinkTurn{from{filter:brightness(1);box-shadow:inset 0 0 18px #0004,0 0 8px #fff}to{filter:brightness(1.35);box-shadow:inset 0 0 18px #0004,0 0 22px #fff,0 0 35px currentColor}}
-
-.token{
-position:absolute;
-width:7%;
-height:9%;
-z-index:30;
---dx:0px;
---dy:0px;
---scale:1;
-transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(var(--scale));
-filter:drop-shadow(2px 4px 3px #0008);
-transition:.18s linear;
-cursor:pointer
-}
+.token{position:absolute;width:7%;height:9%;z-index:30;--dx:0px;--dy:0px;--scale:1;transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(var(--scale));filter:drop-shadow(2px 4px 3px #0008);transition:.18s linear;cursor:pointer}
 .token:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:82%;aspect-ratio:1;border-radius:50%;background:currentColor;border:4px solid #fff;box-shadow:0 0 0 2px #4b270b}
 .token:after{content:"";position:absolute;top:51%;left:50%;transform:translateX(-50%);border-left:12px solid transparent;border-right:12px solid transparent;border-top:22px solid #fff}
 .redT{color:#ff071d}.greenT{color:#06b84f}.yellowT{color:#ffd400}.blueT{color:#09aee8}
-.can{animation:pulse .55s infinite alternate}
-@keyframes pulse{to{transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(calc(var(--scale) * 1.18))}}
+.can{animation:pulse .55s infinite alternate}@keyframes pulse{to{transform:translate(calc(-50% + var(--dx)),calc(-92% + var(--dy))) scale(calc(var(--scale) * 1.18))}}
 .msg{text-align:center;color:white;font-size:27px;font-weight:900;margin:12px 0}
 .panel{display:grid;grid-template-columns:1fr 110px 1fr;gap:10px;align-items:center}
 .box{height:66px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;color:white;border:4px solid #6b350e;box-shadow:0 6px 12px #0006}
@@ -58,32 +65,111 @@ cursor:pointer
 </head>
 <body>
 
-<div id="menuScreen" class="screen active menu">
-  <div class="top">LUDO GAME</div>
-  <button id="onlineBtn" class="bigBtn online">ONLINE</button>
-  <button id="offlineBtn" class="bigBtn offline">OFFLINE</button>
+<div id="splashScreen" class="screen active app">
+  <div class="header">★ LUDO GAME ★</div>
+  <div class="card">
+    <div class="logo">LUDO<br>GAME</div>
+    <button class="btn greenBtn" id="goLogin">LOGIN</button>
+    <button class="btn blueBtn" id="goSignup">SIGN UP</button>
+  </div>
 </div>
 
-<div id="onlineScreen" class="screen menu">
-  <div class="top">ONLINE ROOM</div>
-  <button id="createRoomBtn" class="bigBtn create">CREATE ROOM</button>
-  <input id="roomInput" class="input" placeholder="ROOM CODE">
-  <button id="joinRoomBtn" class="bigBtn join">JOIN ROOM</button>
-  <div id="roomText" class="roomText"></div>
+<div id="signupScreen" class="screen app">
+  <div class="header">★ LUDO GAME ★</div>
+  <div class="card">
+    <div class="small" style="font-size:20px;color:#ffe51c;font-weight:900">CREATE ACCOUNT</div>
+    <input id="suName" class="input" placeholder="Enter Your Name">
+    <input id="suEmail" class="input" placeholder="Enter Email">
+    <input id="suPass" class="input" type="password" placeholder="Enter Password">
+    <input id="suPass2" class="input" type="password" placeholder="Confirm Password">
+    <button class="btn greenBtn" id="signupBtn">SIGN UP</button>
+    <div class="link" id="signupToLogin">Already have account? LOGIN</div>
+  </div>
+</div>
+
+<div id="loginScreen" class="screen app">
+  <div class="header">★ LUDO GAME ★</div>
+  <div class="card">
+    <div class="small" style="font-size:20px;color:#ffe51c;font-weight:900">LOGIN TO ACCOUNT</div>
+    <input id="liEmail" class="input" placeholder="Enter Email">
+    <input id="liPass" class="input" type="password" placeholder="Enter Password">
+    <div class="link" id="forgotLink">Forgot Password?</div>
+    <button class="btn greenBtn" id="loginBtn">LOGIN</button>
+    <div class="link" id="loginToSignup">Don’t have account? SIGN UP</div>
+  </div>
+</div>
+
+<div id="forgotScreen" class="screen app">
+  <div class="header">★ LUDO GAME ★</div>
+  <div class="card">
+    <div class="small" style="font-size:20px;color:#ffe51c;font-weight:900">RESET PASSWORD</div>
+    <input id="fpEmail" class="input" placeholder="Enter Email">
+    <button class="btn greenBtn" id="resetBtn">SEND RESET LINK</button>
+    <div class="link" id="backLogin">LOGIN</div>
+  </div>
+</div>
+
+<div id="homeScreen" class="screen app">
+  <div class="header">★ LUDO GAME ★</div>
+  <div class="profileBox">
+    <div class="avatar" id="homeAvatar">P</div>
+    <div>
+      <div id="homeName" style="font-weight:900;font-size:18px">Player</div>
+      <div id="homeEmail" style="font-size:13px;color:#ddd">email</div>
+    </div>
+  </div>
+  <button class="menuBtn blueBtn" id="playFriends"><span>👥</span> PLAY WITH FRIENDS</button>
+  <button class="menuBtn orangeBtn" id="playOffline"><span>🤖</span> PLAY OFFLINE</button>
+  <button class="menuBtn purpleBtn" id="profileBtn"><span>👤</span> PROFILE</button>
+  <button class="menuBtn redBtn" id="logoutBtn"><span>⏻</span> LOGOUT</button>
+</div>
+
+<div id="profileScreen" class="screen app">
+  <button class="back" id="profileBack">‹</button>
+  <div class="header">LUDO GAME</div>
+  <div class="card">
+    <div class="avatar" id="profileAvatar" style="margin:auto;width:90px;height:90px;font-size:42px">P</div>
+    <div id="profileName" style="text-align:center;font-size:24px;font-weight:900;margin:12px">Player</div>
+    <input id="editName" class="input" placeholder="Edit Name">
+    <button class="btn blueBtn" id="saveNameBtn">SAVE NAME</button>
+    <div class="stats">
+      <div><span>Email</span><b id="profileEmail"></b></div>
+      <div><span>Total Games</span><b id="totalGames">0</b></div>
+      <div><span>Games Won</span><b id="gamesWon">0</b></div>
+      <div><span>Win Rate</span><b id="winRate">0%</b></div>
+    </div>
+  </div>
+</div>
+
+<div id="roomScreen" class="screen app">
+  <button class="back" id="roomBack">‹</button>
+  <div class="header">LUDO GAME</div>
+  <div class="card">
+    <div id="hostOptions">
+      <div class="small" style="color:#ffe51c;font-weight:900">SELECT ONLINE PLAYERS</div>
+      <div class="roomPick">
+        <button data-rp="2">2P</button>
+        <button data-rp="3">3P</button>
+        <button data-rp="4" class="on">4P</button>
+      </div>
+    </div>
+    <button class="btn create" id="createRoomBtn">CREATE ROOM</button>
+    <input id="roomInput" class="input" placeholder="ROOM CODE">
+    <button class="btn join" id="joinRoomBtn">JOIN ROOM</button>
+    <div id="roomText" class="code"></div>
+    <div id="roomStatus" class="small"></div>
+    <div id="roomPlayers"></div>
+    <button class="btn greenBtn" id="startRoomBtn" style="display:none">START GAME</button>
+  </div>
 </div>
 
 <div id="gameScreen" class="screen game">
   <div class="top">PLAY WITH OTHER PLAYERS</div>
-
   <div id="playerBtns" class="btns">
-    <button data-p="2">2</button>
-    <button data-p="3">3</button>
-    <button data-p="4" class="on">4</button>
+    <button data-p="2">2</button><button data-p="3">3</button><button data-p="4" class="on">4</button>
   </div>
-
   <div class="board" id="board"></div>
   <div class="msg" id="msg">RED TURN</div>
-
   <div class="panel">
     <div class="box" id="turnName">RED</div>
     <div class="diceWrap"><button id="dice"></button></div>
@@ -94,417 +180,79 @@ cursor:pointer
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getDatabase, ref, set, update, get, onValue } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDTpVxyJ9hgvpJZuiTrQpFtZKqjKotgQfk",
-  authDomain: "ludo-453.firebaseapp.com",
-  databaseURL: "https://ludo-453-default-rtdb.firebaseio.com",
-  projectId: "ludo-453",
-  storageBucket: "ludo-453.firebasestorage.app",
-  messagingSenderId: "750622072689",
-  appId: "1:750622072689:web:51c0588e7838d223aea0d0"
-};
+const firebaseConfig={apiKey:"AIzaSyDTpVxyJ9hgvpJZuiTrQpFtZKqjKotgQfk",authDomain:"ludo-453.firebaseapp.com",databaseURL:"https://ludo-453-default-rtdb.firebaseio.com",projectId:"ludo-453",storageBucket:"ludo-453.firebasestorage.app",messagingSenderId:"750622072689",appId:"1:750622072689:web:51c0588e7838d223aea0d0"};
+const app=initializeApp(firebaseConfig),db=getDatabase(app),auth=getAuth(app);
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active")}
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+let currentUser=null,userProfile={name:"Player",email:""};
+$("goLogin").onclick=()=>show("loginScreen");$("goSignup").onclick=()=>show("signupScreen");
+$("signupToLogin").onclick=()=>show("loginScreen");$("loginToSignup").onclick=()=>show("signupScreen");
+$("forgotLink").onclick=()=>show("forgotScreen");$("backLogin").onclick=()=>show("loginScreen");
+$("profileBtn").onclick=()=>{loadProfileUI();show("profileScreen")};$("profileBack").onclick=()=>show("homeScreen");
+$("roomBack").onclick=()=>show("homeScreen");$("playFriends").onclick=()=>{prepareRoomScreen();show("roomScreen")};
 
-const menuScreen=document.getElementById("menuScreen");
-const onlineScreen=document.getElementById("onlineScreen");
-const gameScreen=document.getElementById("gameScreen");
-const board=document.getElementById("board");
-const msg=document.getElementById("msg");
-const dice=document.getElementById("dice");
-const turnName=document.getElementById("turnName");
-const mode=document.getElementById("mode");
-const playerBtns=document.getElementById("playerBtns");
+$("signupBtn").onclick=async()=>{try{const name=$("suName").value.trim(),email=$("suEmail").value.trim(),p=$("suPass").value,p2=$("suPass2").value;if(!name||!email||!p)return alert("Fill all details");if(p!==p2)return alert("Password not match");const cr=await createUserWithEmailAndPassword(auth,email,p);await set(ref(db,"users/"+cr.user.uid),{name,email,totalGames:0,gamesWon:0,createdAt:Date.now()});}catch(e){alert(e.message)}};
+$("loginBtn").onclick=async()=>{try{await signInWithEmailAndPassword(auth,$("liEmail").value.trim(),$("liPass").value)}catch(e){alert(e.message)}};
+$("resetBtn").onclick=async()=>{try{await sendPasswordResetEmail(auth,$("fpEmail").value.trim());alert("Reset link sent")}catch(e){alert(e.message)}};
+$("logoutBtn").onclick=()=>signOut(auth);
 
-let online=false, roomCode="", myColor="red", unsub=null, applyingRemote=false;
+onAuthStateChanged(auth,async(u)=>{if(!u){currentUser=null;show("splashScreen");return}currentUser=u;const snap=await get(ref(db,"users/"+u.uid));userProfile=snap.exists()?snap.val():{name:"Player",email:u.email,totalGames:0,gamesWon:0};updateHomeUI();show("homeScreen")});
+function updateHomeUI(){$("homeName").textContent=userProfile.name||"Player";$("homeEmail").textContent=userProfile.email||currentUser.email;$("homeAvatar").textContent=(userProfile.name||"P")[0].toUpperCase()}
+function loadProfileUI(){$("profileName").textContent=userProfile.name||"Player";$("editName").value=userProfile.name||"";$("profileEmail").textContent=userProfile.email||currentUser.email;$("profileAvatar").textContent=(userProfile.name||"P")[0].toUpperCase();$("totalGames").textContent=userProfile.totalGames||0;$("gamesWon").textContent=userProfile.gamesWon||0;let tg=userProfile.totalGames||0,gw=userProfile.gamesWon||0;$("winRate").textContent=tg?Math.round(gw/tg*100)+"%":"0%"}
+$("saveNameBtn").onclick=async()=>{const name=$("editName").value.trim();if(!name)return;await update(ref(db,"users/"+currentUser.uid),{name});userProfile.name=name;updateHomeUI();loadProfileUI();alert("Saved")};
+
+let online=false,roomCode="",myColor="red",unsub=null,applyingRemote=false,isHost=false,selectedRoomPlayers=4,currentRoomPlayers={},roomStarted=false;
+const roomColors={2:["red","blue"],3:["red","green","blue"],4:["red","green","yellow","blue"]};
+function prepareRoomScreen(){isHost=false;$("hostOptions").style.display="block";$("createRoomBtn").style.display="block";$("joinRoomBtn").style.display="block";$("roomInput").style.display="block";$("startRoomBtn").style.display="none";$("roomText").textContent="";$("roomStatus").textContent="";$("roomPlayers").innerHTML="";$("roomInput").value=""}
+document.querySelectorAll(".roomPick button").forEach(b=>b.onclick=()=>{selectedRoomPlayers=Number(b.dataset.rp);document.querySelectorAll(".roomPick button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
 
 const all=["red","green","yellow","blue"];
-let active=["red","green","yellow","blue"];
-let turn=0,diceVal=0,busy=false,waiting=false,gameOver=false,animating=false;
-let finished=[];
-let pos,tokens;
-
-const color={red:"#ff071d",green:"#06b84f",yellow:"#ffd400",blue:"#09aee8"};
-const dark={red:"#97000c",green:"#066b30",yellow:"#a98600",blue:"#04769d"};
-const offset={red:0,green:13,yellow:26,blue:39};
-const safe=[0,8,13,21,26,34,39,47];
-
+let active=["red","green","yellow","blue"],turn=0,diceVal=0,busy=false,waiting=false,gameOver=false,animating=false,finished=[],pos,tokens;
+const color={red:"#ff071d",green:"#06b84f",yellow:"#ffd400",blue:"#09aee8"},dark={red:"#97000c",green:"#066b30",yellow:"#a98600",blue:"#04769d"},offset={red:0,green:13,yellow:26,blue:39},safe=[0,8,13,21,26,34,39,47];
 const path=[[13,6],[12,6],[11,6],[10,6],[9,6],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0],[7,0],[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[4,6],[3,6],[2,6],[1,6],[0,6],[0,7],[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,14],[8,14],[8,13],[8,12],[8,11],[8,10],[8,9],[9,8],[10,8],[11,8],[12,8],[13,8],[14,8],[14,7],[14,6]];
 const lane={red:[[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]],green:[[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]],yellow:[[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]],blue:[[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]]};
 const base={red:[[10,1],[10,4],[13,1],[13,4]],green:[[1,1],[1,4],[4,1],[4,4]],yellow:[[1,10],[1,13],[4,10],[4,13]],blue:[[10,10],[10,13],[13,10],[13,13]]};
 
-function show(s){
-  [menuScreen,onlineScreen,gameScreen].forEach(x=>x.classList.remove("active"));
-  s.classList.add("active");
-}
+$("playOffline").onclick=()=>{online=false;show("gameScreen");$("playerBtns").style.display="grid";build();reset(4)};
+function initialState(n){return{active:roomColors[n],maxPlayers:n,turn:0,diceVal:0,busy:false,waiting:false,gameOver:false,animating:false,finished:[],pos:{red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},msg:"RED TURN"}}
 
-document.getElementById("offlineBtn").onclick=()=>{
-  online=false;
-  show(gameScreen);
-  playerBtns.style.display="grid";
-  build();
-  reset(4);
-};
+$("createRoomBtn").onclick=async()=>{roomCode=Math.random().toString(36).substring(2,8).toUpperCase();isHost=true;online=true;myColor="red";const st=initialState(selectedRoomPlayers);st.roomCode=roomCode;st.started=false;st.hostUid=currentUser.uid;st.players={red:{uid:currentUser.uid,name:userProfile.name||"Player",color:"red"}};await set(ref(db,"rooms/"+roomCode),st);listenRoom();$("roomText").textContent=roomCode;$("roomStatus").textContent="Host: wait players, then Start Game";$("startRoomBtn").style.display="block";$("hostOptions").style.display="none";$("createRoomBtn").style.display="none";$("joinRoomBtn").style.display="none";$("roomInput").style.display="none"};
+$("joinRoomBtn").onclick=async()=>{roomCode=$("roomInput").value.trim().toUpperCase();if(!roomCode)return alert("Enter room code");const snap=await get(ref(db,"rooms/"+roomCode));if(!snap.exists())return alert("Room not found");const st=snap.val();if(st.started)return alert("Game already started");const max=st.maxPlayers||2,colors=st.active||roomColors[max],players=st.players||{},used=Object.keys(players);if(used.some(c=>players[c].uid===currentUser.uid)){myColor=used.find(c=>players[c].uid===currentUser.uid)}else{const free=colors.find(c=>!used.includes(c));if(!free)return alert("Room full");myColor=free;await update(ref(db,"rooms/"+roomCode+"/players/"+myColor),{uid:currentUser.uid,name:userProfile.name||"Player",color:myColor})}isHost=false;online=true;listenRoom();$("roomText").textContent=roomCode;$("roomStatus").textContent="Waiting for host to start";$("startRoomBtn").style.display="none";$("hostOptions").style.display="none";$("createRoomBtn").style.display="none";$("joinRoomBtn").style.display="none";$("roomInput").style.display="none"};
+$("startRoomBtn").onclick=async()=>{if(!isHost)return alert("Only host can start");const playersCount=Object.keys(currentRoomPlayers||{}).length;if(playersCount<2)return alert("At least 2 players required");await update(ref(db,"rooms/"+roomCode),{started:true})};
 
-document.getElementById("onlineBtn").onclick=()=>show(onlineScreen);
+function listenRoom(){if(unsub)unsub();unsub=onValue(ref(db,"rooms/"+roomCode),(snap)=>{const st=snap.val();if(!st)return;currentRoomPlayers=st.players||{};roomStarted=!!st.started;renderPlayers(currentRoomPlayers,st.maxPlayers||2);applyState(st);if(st.started){show("gameScreen");$("playerBtns").style.display="none";if(!tokens)build();render()}})}
+function renderPlayers(players,max){const arr=Object.values(players);$("roomPlayers").innerHTML=arr.map(p=>`<div class="playerItem">${p.name} - ${p.color}</div>`).join("");$("roomStatus").textContent=(isHost?"Host only can start. ":"Waiting for host. ")+arr.length+"/"+max+" players joined"}
+function pushState(text){if(!online||applyingRemote)return;get(ref(db,"rooms/"+roomCode+"/players")).then(snap=>{const savedPlayers=snap.exists()?snap.val():{};update(ref(db,"rooms/"+roomCode),{active,turn,diceVal,busy,waiting,gameOver,animating,finished,pos,msg:text||$("msg").textContent,started:true,players:savedPlayers,roomCode,maxPlayers:active.length,hostUid:isHost?currentUser.uid:null})})}
+function applyState(st){applyingRemote=true;active=st.active;turn=st.turn;diceVal=st.diceVal;busy=st.busy;waiting=st.waiting;gameOver=st.gameOver;animating=st.animating;finished=st.finished||[];pos=st.pos;$("msg").textContent=st.msg||"";if(tokens)render();applyingRemote=false}
 
-document.getElementById("createRoomBtn").onclick=async()=>{
-  roomCode=Math.random().toString(36).substring(2,6).toUpperCase();
-  myColor="red";
-  online=true;
-  document.getElementById("roomText").innerHTML="ROOM CODE: "+roomCode+"<br>Waiting friend...";
-  const st=initialState(2);
-  st.roomCode=roomCode; st.players={red:true,blue:false};
-  await set(ref(db,"rooms/"+roomCode),st);
-  listenRoom();
-};
-
-document.getElementById("joinRoomBtn").onclick=async()=>{
-  roomCode=document.getElementById("roomInput").value.trim().toUpperCase();
-  if(!roomCode)return alert("Enter room code");
-  const snap=await get(ref(db,"rooms/"+roomCode));
-  if(!snap.exists())return alert("Room not found");
-  myColor="blue";
-  online=true;
-  await update(ref(db,"rooms/"+roomCode+"/players"),{blue:true});
-  listenRoom();
-  show(gameScreen);
-  playerBtns.style.display="none";
-  build();
-};
-
-function listenRoom(){
-  if(unsub)unsub();
-  unsub=onValue(ref(db,"rooms/"+roomCode),(snap)=>{
-    const st=snap.val();
-    if(!st)return;
-    applyState(st);
-    if(st.players && st.players.blue){
-      show(gameScreen);
-      playerBtns.style.display="none";
-      if(!tokens)build();
-      render();
-    }
-  });
-}
-
-function initialState(n){
-  return {
-    active:n===2?["red","blue"]:n===3?["red","green","blue"]:["red","green","yellow","blue"],
-    turn:0,diceVal:0,busy:false,waiting:false,gameOver:false,animating:false,finished:[],
-    pos:{red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},
-    msg:"RED TURN"
-  };
-}
-
-function pushState(text){
-  if(!online || applyingRemote)return;
-  set(ref(db,"rooms/"+roomCode),{
-    active,turn,diceVal,busy,waiting,gameOver,animating,finished,pos,msg:text||msg.textContent,
-    players:{red:true,blue:true},roomCode
-  });
-}
-
-function applyState(st){
-  applyingRemote=true;
-  active=st.active; turn=st.turn; diceVal=st.diceVal; busy=st.busy; waiting=st.waiting;
-  gameOver=st.gameOver; animating=st.animating; finished=st.finished||[]; pos=st.pos;
-  msg.textContent=st.msg||"";
-  if(tokens)render();
-  applyingRemote=false;
-}
-
-function setDice(n){
-  const maps={
-    1:[0,0,0,0,1,0,0,0,0],
-    2:[1,0,0,0,0,0,0,0,1],
-    3:[1,0,0,0,1,0,0,0,1],
-    4:[1,0,1,0,0,0,1,0,1],
-    5:[1,0,1,0,1,0,1,0,1],
-    6:[1,0,1,1,0,1,1,0,1]
-  };
-  dice.innerHTML=maps[n||1].map(v=>`<span class="dot ${v?'':'hide'}"></span>`).join("");
-}
-
+function setDice(n){const maps={1:[0,0,0,0,1,0,0,0,0],2:[1,0,0,0,0,0,0,0,1],3:[1,0,0,0,1,0,0,0,1],4:[1,0,1,0,0,0,1,0,1],5:[1,0,1,0,1,0,1,0,1],6:[1,0,1,1,0,1,1,0,1]};$("dice").innerHTML=maps[n||1].map(v=>`<span class="dot ${v?'':'hide'}"></span>`).join("")}
 function center(r,c){return[(c+.5)*100/15,(r+.5)*100/15]}
 function isPath(r,c){return path.some(p=>p[0]===r&&p[1]===c)}
 function laneColor(r,c){for(let k in lane){if(lane[k].some(p=>p[0]===r&&p[1]===c))return k}return""}
 function isStar(r,c){return safe.some(i=>path[i][0]===r&&path[i][1]===c)}
-
-function makeHome(col){
-  let h=document.createElement("div");
-  h.className="home "+col;
-  h.innerHTML='<div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>';
-  board.appendChild(h);
-}
-
-function build(){
-  board.innerHTML="";
-  for(let r=0;r<15;r++){
-    for(let c=0;c<15;c++){
-      let d=document.createElement("div");
-      d.className="cell";
-      d.style.gridColumn=c+1;
-      d.style.gridRow=r+1;
-      if(r<6&&c<6)d.classList.add("green");
-      if(r<6&&c>8)d.classList.add("yellow");
-      if(r>8&&c<6)d.classList.add("red");
-      if(r>8&&c>8)d.classList.add("blue");
-      if(isPath(r,c))d.className="cell";
-      let lc=laneColor(r,c);
-      if(lc)d.className="cell "+lc;
-      if(isStar(r,c))d.classList.add("star");
-      if(r>=6&&r<=8&&c>=6&&c<=8)d.className="cell center";
-      board.appendChild(d);
-    }
-  }
-  makeHome("green");makeHome("yellow");makeHome("red");makeHome("blue");
-
-  tokens={red:[],green:[],yellow:[],blue:[]};
-  all.forEach(col=>{
-    for(let i=0;i<4;i++){
-      let t=document.createElement("div");
-      t.className="token "+col+"T";
-      t.dataset.c=col;t.dataset.i=i;
-      board.appendChild(t);
-      tokens[col].push(t);
-    }
-  });
-}
-
-function reset(n){
-  let st=initialState(n);
-  active=st.active;turn=st.turn;diceVal=st.diceVal;busy=false;waiting=false;gameOver=false;animating=false;finished=[];pos=st.pos;
-  mode.textContent=n+"P";
-  document.querySelectorAll(".btns button").forEach(b=>b.classList.toggle("on",Number(b.dataset.p)===n));
-  setDice(1);
-  setTurn();
-}
-
-function xy(col,i){
-  let p=pos[col][i];
-  if(p<0)return center(base[col][i][0],base[col][i][1]);
-  if(p<=51){let g=(offset[col]+p)%52;return center(path[g][0],path[g][1])}
-  if(p<=57){let l=lane[col][p-52];return center(l[0],l[1])}
-  return[50,50];
-}
-
-function currentColor(){return active[turn]}
-function isMyTurn(){return !online || currentColor()===myColor}
-
-function can(col,i){
-  if(gameOver||animating||col!==currentColor()||diceVal===0)return false;
-  if(online && col!==myColor)return false;
-  if(pos[col][i]>=58)return false;
-  if(pos[col][i]<0)return diceVal===6;
-  return pos[col][i]+diceVal<=58;
-}
-
-function applyOverlapLayout(){
-  const groups={};
-
-  all.forEach(col=>{
-    for(let i=0;i<4;i++){
-      if(active.indexOf(col)<0)return;
-      const t=tokens[col][i];
-      const p=xy(col,i);
-      const key=p[0].toFixed(2)+"_"+p[1].toFixed(2);
-
-      if(!groups[key])groups[key]=[];
-      groups[key].push(t);
-    }
-  });
-
-  Object.values(groups).forEach(list=>{
-    const n=list.length;
-
-    list.forEach((t,idx)=>{
-      t.style.setProperty("--dx","0px");
-      t.style.setProperty("--dy","0px");
-      t.style.setProperty("--scale","1");
-      t.style.zIndex=30+idx;
-    });
-
-    if(n===2){
-      const offset=[[-7,0],[7,0]];
-      list.forEach((t,i)=>{
-        t.style.setProperty("--dx",offset[i][0]+"px");
-        t.style.setProperty("--dy",offset[i][1]+"px");
-        t.style.setProperty("--scale",".72");
-      });
-    }
-
-    if(n===3){
-      const offset=[[0,-6],[-7,5],[7,5]];
-      list.forEach((t,i)=>{
-        t.style.setProperty("--dx",offset[i][0]+"px");
-        t.style.setProperty("--dy",offset[i][1]+"px");
-        t.style.setProperty("--scale",".66");
-      });
-    }
-
-    if(n>=4){
-      const offset=[[-7,-6],[7,-6],[-7,6],[7,6]];
-      list.forEach((t,i)=>{
-        t.style.setProperty("--dx",offset[i%4][0]+"px");
-        t.style.setProperty("--dy",offset[i%4][1]+"px");
-        t.style.setProperty("--scale",".60");
-      });
-    }
-  });
-}
-
-function render(){
-  all.forEach(col=>{
-    for(let i=0;i<4;i++){
-      let t=tokens[col][i],p=xy(col,i);
-      t.style.left=p[0]+"%";t.style.top=p[1]+"%";
-      t.style.display=active.indexOf(col)>=0?"block":"none";
-      t.classList.toggle("can",can(col,i));
-    }
-  });
-
-  applyOverlapLayout();
-
-  let cur=currentColor();
-  turnName.textContent=cur.toUpperCase();
-  turnName.style.background=`linear-gradient(${color[cur]},${dark[cur]})`;
-  document.querySelector(".diceWrap").style.background=`linear-gradient(${color[cur]},${dark[cur]})`;
-  mode.textContent=online?roomCode:(active.length+"P");
-  setDice(diceVal||1);
-
-  document.querySelectorAll(".home").forEach(h=>h.classList.remove("blinkTurn"));
-  const home=document.querySelector(".home."+cur);
-  if(home)home.classList.add("blinkTurn");
-}
-
-function setTurn(){
-  if(gameOver)return;
-  diceVal=0;busy=false;waiting=false;animating=false;
-  msg.textContent=currentColor().toUpperCase()+" TURN";
-  render();
-  pushState(msg.textContent);
-  if(!online && currentColor()!=="red")setTimeout(roll,700);
-}
-
-function roll(){
-  if(gameOver||busy||waiting||animating||!isMyTurn())return;
-  busy=true;
-  let c=0;
-  let tm=setInterval(()=>{
-    setDice(Math.floor(Math.random()*6)+1);
-    c++;
-    if(c>10){
-      clearInterval(tm);
-      diceVal=Math.floor(Math.random()*6)+1;
-      setDice(diceVal);
-      afterRoll();
-    }
-  },70);
-}
-
-function afterRoll(){
-  let cur=currentColor(),moves=[];
-  for(let i=0;i<4;i++)if(can(cur,i))moves.push(i);
-  if(!moves.length){
-    msg.textContent="NO MOVE";
-    pushState(msg.textContent);
-    setTimeout(next,650);
-    return;
-  }
-  waiting=true;busy=false;
-  msg.textContent=(online && cur!==myColor)?cur+" PLAYING":(cur==="red"?"CHOOSE COOKIE":cur+" MOVING");
-  render();pushState(msg.textContent);
-  if(!online && cur!=="red")setTimeout(()=>computer(moves),650);
-}
-
-function move(col,i){
-  if(col!==currentColor()||!waiting||!can(col,i))return;
-  doMove(col,i);
-}
-
-function animateMove(col,i,target,cb){
-  animating=true;waiting=false;
-  function step(){
-    if(pos[col][i]<0){pos[col][i]=0;render();pushState(msg.textContent);setTimeout(done,180);return}
-    if(pos[col][i]<target){pos[col][i]++;render();pushState(msg.textContent);setTimeout(step,180)}
-    else done();
-  }
-  function done(){animating=false;cb()}
-  step();
-}
-
-function doMove(col,i){
-  busy=true;
-  let target=(pos[col][i]<0&&diceVal===6)?0:pos[col][i]+diceVal;
-  animateMove(col,i,target,()=>{
-    if(pos[col][i]===58)checkFinish(col);
-    else cut(col,i);
-    render();
-
-    if(gameOver){pushState("GAME OVER");return}
-    if(diceVal===6){
-      diceVal=0;busy=false;waiting=false;
-      msg.textContent=col+" GOT 6";
-      render();pushState(msg.textContent);
-      if(!online && col!=="red")setTimeout(roll,700);
-    }else setTimeout(next,650);
-  });
-}
-
-function checkFinish(col){
-  if(pos[col].every(v=>v>=58)&&finished.indexOf(col)<0){
-    finished.push(col);
-    if(finished.length>=active.length-1){
-      gameOver=true;
-      msg.textContent="GAME OVER";
-    }
-  }
-}
-
-function global(col,p){
-  if(p<0||p>51)return null;
-  return(offset[col]+p)%52;
-}
-
-function cut(col,i){
-  let g=global(col,pos[col][i]);
-  if(g===null||safe.indexOf(g)>=0)return;
-  active.forEach(o=>{
-    if(o===col)return;
-    for(let j=0;j<4;j++){
-      if(global(o,pos[o][j])===g){
-        pos[o][j]=-1;
-        msg.textContent=col+" CUT "+o;
-      }
-    }
-  });
-}
-
-function next(){
-  if(gameOver)return;
-  diceVal=0;busy=false;waiting=false;animating=false;
-  do{turn=(turn+1)%active.length}while(finished.indexOf(active[turn])>=0);
-  setTurn();
-}
-
-function computer(moves){
-  let col=currentColor(),pick=moves[0];
-  if(diceVal===6){
-    for(let i=0;i<moves.length;i++)if(pos[col][moves[i]]<0){pick=moves[i];break}
-  }else{
-    for(let j=0;j<moves.length;j++)if(pos[col][moves[j]]>=0){pick=moves[j];break}
-  }
-  doMove(col,pick);
-}
-
-document.addEventListener("click",(e)=>{
-  if(e.target.matches(".btns button") && !online)reset(Number(e.target.dataset.p));
-  if(e.target.closest("#dice"))roll();
-  if(e.target.classList.contains("token"))move(e.target.dataset.c,Number(e.target.dataset.i));
-});
+function makeHome(col){let h=document.createElement("div");h.className="home "+col;h.innerHTML='<div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>';$("board").appendChild(h)}
+function build(){$("board").innerHTML="";for(let r=0;r<15;r++){for(let c=0;c<15;c++){let d=document.createElement("div");d.className="cell";d.style.gridColumn=c+1;d.style.gridRow=r+1;if(r<6&&c<6)d.classList.add("green");if(r<6&&c>8)d.classList.add("yellow");if(r>8&&c<6)d.classList.add("red");if(r>8&&c>8)d.classList.add("blue");if(isPath(r,c))d.className="cell";let lc=laneColor(r,c);if(lc)d.className="cell "+lc;if(isStar(r,c))d.classList.add("star");if(r>=6&&r<=8&&c>=6&&c<=8)d.className="cell center";$("board").appendChild(d)}}makeHome("green");makeHome("yellow");makeHome("red");makeHome("blue");tokens={red:[],green:[],yellow:[],blue:[]};all.forEach(col=>{for(let i=0;i<4;i++){let t=document.createElement("div");t.className="token "+col+"T";t.dataset.c=col;t.dataset.i=i;$("board").appendChild(t);tokens[col].push(t)}})}
+function reset(n){let st=initialState(n);active=st.active;turn=0;diceVal=0;busy=false;waiting=false;gameOver=false;animating=false;finished=[];pos=st.pos;$("mode").textContent=n+"P";document.querySelectorAll(".btns button").forEach(b=>b.classList.toggle("on",Number(b.dataset.p)===n));setDice(1);setTurn()}
+function xy(col,i){let p=pos[col][i];if(p<0)return center(base[col][i][0],base[col][i][1]);if(p<=51){let g=(offset[col]+p)%52;return center(path[g][0],path[g][1])}if(p<=57){let l=lane[col][p-52];return center(l[0],l[1])}return[50,50]}
+function currentColor(){return active[turn]}function isMyTurn(){return !online||currentColor()===myColor}
+function can(col,i){if(gameOver||animating||col!==currentColor()||diceVal===0)return false;if(online&&col!==myColor)return false;if(pos[col][i]>=58)return false;if(pos[col][i]<0)return diceVal===6;return pos[col][i]+diceVal<=58}
+function applyOverlapLayout(){const groups={};all.forEach(col=>{for(let i=0;i<4;i++){if(active.indexOf(col)<0)return;const t=tokens[col][i],p=xy(col,i),key=p[0].toFixed(2)+"_"+p[1].toFixed(2);if(!groups[key])groups[key]=[];groups[key].push(t)}});Object.values(groups).forEach(list=>{let n=list.length;list.forEach((t,idx)=>{t.style.setProperty("--dx","0px");t.style.setProperty("--dy","0px");t.style.setProperty("--scale","1");t.style.zIndex=30+idx});let offs=n===2?[[-7,0],[7,0]]:n===3?[[0,-6],[-7,5],[7,5]]:[[-7,-6],[7,-6],[-7,6],[7,6]];if(n>1)list.forEach((t,i)=>{t.style.setProperty("--dx",offs[i%4][0]+"px");t.style.setProperty("--dy",offs[i%4][1]+"px");t.style.setProperty("--scale",n===2?".72":n===3?".66":".60")})})}
+function render(){all.forEach(col=>{for(let i=0;i<4;i++){let t=tokens[col][i],p=xy(col,i);t.style.left=p[0]+"%";t.style.top=p[1]+"%";t.style.display=active.indexOf(col)>=0?"block":"none";t.classList.toggle("can",can(col,i))}});applyOverlapLayout();let cur=currentColor();$("turnName").textContent=cur.toUpperCase();$("turnName").style.background=`linear-gradient(${color[cur]},${dark[cur]})`;document.querySelector(".diceWrap").style.background=`linear-gradient(${color[cur]},${dark[cur]})`;$("mode").textContent=online?roomCode:(active.length+"P");setDice(diceVal||1);document.querySelectorAll(".home").forEach(h=>h.classList.remove("blinkTurn"));let home=document.querySelector(".home."+cur);if(home)home.classList.add("blinkTurn")}
+function setTurn(){if(gameOver)return;diceVal=0;busy=false;waiting=false;animating=false;$("msg").textContent=currentColor().toUpperCase()+" TURN";render();pushState($("msg").textContent);if(!online&&currentColor()!=="red")setTimeout(roll,700)}
+function roll(){if(gameOver||busy||waiting||animating||!isMyTurn())return;busy=true;let c=0,tm=setInterval(()=>{setDice(Math.floor(Math.random()*6)+1);c++;if(c>10){clearInterval(tm);diceVal=Math.floor(Math.random()*6)+1;setDice(diceVal);afterRoll()}},70)}
+function afterRoll(){let cur=currentColor(),moves=[];for(let i=0;i<4;i++)if(can(cur,i))moves.push(i);if(!moves.length){$("msg").textContent="NO MOVE";pushState($("msg").textContent);setTimeout(next,650);return}waiting=true;busy=false;$("msg").textContent=(online&&cur!==myColor)?cur+" PLAYING":(cur==="red"?"CHOOSE COOKIE":cur+" MOVING");render();pushState($("msg").textContent);if(!online&&cur!=="red")setTimeout(()=>computer(moves),650)}
+function move(col,i){if(col!==currentColor()||!waiting||!can(col,i))return;doMove(col,i)}
+function animateMove(col,i,target,cb){animating=true;waiting=false;function step(){if(pos[col][i]<0){pos[col][i]=0;render();pushState($("msg").textContent);setTimeout(done,180);return}if(pos[col][i]<target){pos[col][i]++;render();pushState($("msg").textContent);setTimeout(step,180)}else done()}function done(){animating=false;cb()}step()}
+function doMove(col,i){busy=true;let target=(pos[col][i]<0&&diceVal===6)?0:pos[col][i]+diceVal;animateMove(col,i,target,()=>{if(pos[col][i]===58)checkFinish(col);else cut(col,i);render();if(gameOver){pushState("GAME OVER");return}if(diceVal===6){diceVal=0;busy=false;waiting=false;$("msg").textContent=col+" GOT 6";render();pushState($("msg").textContent);if(!online&&col!=="red")setTimeout(roll,700)}else setTimeout(next,650)})}
+function checkFinish(col){if(pos[col].every(v=>v>=58)&&finished.indexOf(col)<0){finished.push(col);if(finished.length>=active.length-1){gameOver=true;$("msg").textContent="GAME OVER"}}}
+function global(col,p){if(p<0||p>51)return null;return(offset[col]+p)%52}
+function cut(col,i){let g=global(col,pos[col][i]);if(g===null||safe.indexOf(g)>=0)return;active.forEach(o=>{if(o===col)return;for(let j=0;j<4;j++){if(global(o,pos[o][j])===g){pos[o][j]=-1;$("msg").textContent=col+" CUT "+o}}})}
+function next(){if(gameOver)return;diceVal=0;busy=false;waiting=false;animating=false;do{turn=(turn+1)%active.length}while(finished.indexOf(active[turn])>=0);setTurn()}
+function computer(moves){let col=currentColor(),pick=moves[0];if(diceVal===6){for(let i=0;i<moves.length;i++)if(pos[col][moves[i]]<0){pick=moves[i];break}}else{for(let j=0;j<moves.length;j++)if(pos[col][moves[j]]>=0){pick=moves[j];break}}doMove(col,pick)}
+document.addEventListener("click",(e)=>{if(e.target.matches(".btns button")&&!online)reset(Number(e.target.dataset.p));if(e.target.closest("#dice"))roll();if(e.target.classList.contains("token"))move(e.target.dataset.c,Number(e.target.dataset.i))});
 </script>
 </body>
 </html>
